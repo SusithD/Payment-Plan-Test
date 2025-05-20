@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center h-16">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center space-x-2">
-          <span class="text-primary-600 text-xl font-bold">PaymentPlan</span>
+          <span class="text-[#2C4880] text-xl font-bold">PaymentPlan</span>
         </NuxtLink>
         
         <!-- Navigation -->
@@ -13,8 +13,8 @@
             v-for="item in navigationItems" 
             :key="item.name" 
             :to="item.href" 
-            class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
-            :class="{ 'text-primary-600': route.path === item.href }"
+            class="text-gray-700 hover:text-[#2C4880] font-medium transition-colors duration-200"
+            :class="{ 'text-[#2C4880]': route.path === item.href }"
           >
             {{ item.name }}
           </NuxtLink>
@@ -26,7 +26,7 @@
             <ProfileDropdown />
           </template>
           <template v-else>
-            <NuxtLink to="/auth/login" class="text-gray-700 hover:text-primary-600 font-medium">
+            <NuxtLink to="/auth/login" class="text-gray-700 hover:text-[#2C4880] font-medium">
               Log in
             </NuxtLink>
             <NuxtLink to="/auth/signup" class="btn-primary">
@@ -58,8 +58,8 @@
           v-for="item in navigationItems" 
           :key="item.name" 
           :to="item.href" 
-          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
-          :class="{ 'bg-gray-50 text-primary-600': route.path === item.href }"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#2C4880] hover:bg-gray-50"
+          :class="{ 'bg-gray-50 text-[#2C4880]': route.path === item.href }"
           @click="mobileMenuOpen = false"
         >
           {{ item.name }}
@@ -69,14 +69,14 @@
           <template v-if="isAuthenticated">
             <NuxtLink 
               to="/profile" 
-              class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+              class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#2C4880] hover:bg-gray-50"
               @click="mobileMenuOpen = false"
             >
               Your Profile
             </NuxtLink>
             <NuxtLink 
               to="/settings" 
-              class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+              class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#2C4880] hover:bg-gray-50"
               @click="mobileMenuOpen = false"
             >
               Settings
@@ -91,14 +91,14 @@
           <template v-else>
             <NuxtLink 
               to="/auth/login" 
-              class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+              class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#2C4880] hover:bg-gray-50"
               @click="mobileMenuOpen = false"
             >
               Log in
             </NuxtLink>
             <NuxtLink 
               to="/auth/signup" 
-              class="block px-3 py-2 rounded-md text-base font-medium bg-primary-500 text-white hover:bg-primary-600"
+              class="block px-3 py-2 rounded-md text-base font-medium bg-[#2C4880] text-white hover:bg-[#1e3563]"
               @click="mobileMenuOpen = false"
             >
               Sign up
@@ -136,3 +136,24 @@ const logout = () => {
   router.push('/auth/login');
 };
 </script>
+
+<style>
+.btn-primary {
+  @apply bg-[#2C4880] hover:bg-[#1e3563] text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

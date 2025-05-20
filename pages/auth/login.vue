@@ -158,40 +158,107 @@
     
     <!-- Right side - Image section -->
     <div class="hidden lg:block lg:w-1/2 relative overflow-hidden">
-      <!-- Background Image -->
+      <!-- Background Image with gradient overlay -->
       <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
-        <div class="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-800/50 to-primary-800/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/75 to-primary-700/60"></div>
       </div>
       
-      <!-- Content overlay -->
+      <!-- Content overlay with modern design -->
       <div class="relative z-10 flex flex-col h-full p-12 justify-between">
+        <!-- Top Section -->
         <div class="mt-16">
-          <div class="inline-block px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm mb-6">
-            <span class="text-white font-medium">Easy Payment Management</span>
+          <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md mb-6 border border-white/20">
+            <span class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-white font-medium">Trusted by 20,000+ users</span>
+            </span>
           </div>
-          <h2 class="text-4xl font-bold text-white mb-4 max-w-md">Take control of your finances with smart payment planning</h2>
-          <p class="text-white/80 text-lg max-w-md">Join thousands of users who have simplified their payment processes and improved their financial wellbeing.</p>
+          <h2 class="text-4xl font-bold text-white mb-6 max-w-md leading-tight">Manage your payments <span class="text-accent-300">smarter</span> with PaymentPlan</h2>
+          <p class="text-white/90 text-xl max-w-lg leading-relaxed mb-8">Access your dashboard to track, plan and manage all your payments in one secure place.</p>
         </div>
         
-        <div class="mt-auto">
-          <div class="bg-white/10 backdrop-blur-md rounded-xl p-6">
-            <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0">
-                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-primary-300 to-secondary-300 flex items-center justify-center text-white font-bold">
-                  AJ
+        <!-- Feature highlight section -->
+        <div class="space-y-6">
+          <!-- Stats cards -->
+          <div class="grid grid-cols-2 gap-6">
+            <!-- Analytics Card -->
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 transform transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="flex flex-col items-center text-center">
+                <div class="h-16 w-16 rounded-2xl bg-accent-500/20 flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <h3 class="text-white text-lg font-semibold mb-2">Advanced Analytics</h3>
+                <p class="text-white/80">Get detailed insights on your spending patterns</p>
+              </div>
+            </div>
+
+            <!-- Security Card -->
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 transform transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="flex flex-col items-center text-center">
+                <div class="h-16 w-16 rounded-2xl bg-success-500/20 flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-success-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 class="text-white text-lg font-semibold mb-2">Bank-Level Security</h3>
+                <p class="text-white/80">Your financial data is protected with end-to-end encryption</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Banner -->
+          <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 relative overflow-hidden">
+            <div class="flex items-start">
+              <div class="mr-4">
+                <div class="h-12 w-12 rounded-xl bg-primary-300/20 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 </div>
               </div>
               <div>
-                <div class="flex items-center mb-1">
-                  <div class="flex">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  </div>
+                <h3 class="text-white text-lg font-semibold mb-2">Never Miss a Payment</h3>
+                <p class="text-white/80">Smart reminders and scheduling help you stay on top of all your payments.</p>
+                <div class="mt-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full bg-accent-500/20 text-accent-300 text-sm font-medium">
+                    <span class="mr-1">●</span> Premium Feature
+                  </span>
                 </div>
-                <p class="text-white text-lg font-medium mb-2">Alex Johnson</p>
-                <p class="text-white/80 italic">"PaymentPlan has completely transformed how I manage my finances. The intuitive dashboard gives me a clear picture of where my money is going each month."</p>
               </div>
+            </div>
+            
+            <!-- Decorative elements -->
+            <div class="absolute -bottom-6 -right-6 h-24 w-24 rounded-full bg-gradient-to-r from-accent-500/20 to-primary-500/10 blur-xl"></div>
+            <div class="absolute -top-10 -right-10 h-16 w-16 rounded-full bg-gradient-to-r from-success-500/20 to-accent-500/10 blur-lg"></div>
+          </div>
+        </div>
+        
+        <!-- Bottom section with stats -->
+        <div class="mt-12">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-white font-medium">Trusted by financial experts</h3>
+            <div class="flex space-x-2">
+              <span class="flex h-2.5 w-2.5 rounded-full bg-accent-400"></span>
+              <span class="flex h-2.5 w-2.5 rounded-full bg-white/30"></span>
+              <span class="flex h-2.5 w-2.5 rounded-full bg-white/30"></span>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-6">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-white">98%</div>
+              <div class="text-white/70 text-sm mt-1">Customer satisfaction</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-white">$2.5M</div>
+              <div class="text-white/70 text-sm mt-1">Late fees saved</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-white">15min</div>
+              <div class="text-white/70 text-sm mt-1">Setup time</div>
             </div>
           </div>
         </div>
@@ -281,8 +348,8 @@ const handleLogin = async () => {
 
 .btn-gradient {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
-  --tw-gradient-from: #4f46e5;
-  --tw-gradient-to: #9333ea;
+  --tw-gradient-from: #2C4880;
+  --tw-gradient-to: #4476b0;
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   color: white;
 }
@@ -292,8 +359,8 @@ const handleLogin = async () => {
   -webkit-background-clip: text;
   color: transparent;
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
-  --tw-gradient-from: #4f46e5;
-  --tw-gradient-to: #9333ea;
+  --tw-gradient-from: #2C4880;
+  --tw-gradient-to: #4476b0;
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
@@ -320,7 +387,7 @@ const handleLogin = async () => {
 
 .social-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 0 0 3px rgba(44, 72, 128, 0.2);
 }
 
 .social-btn span {
