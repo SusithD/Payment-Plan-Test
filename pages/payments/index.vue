@@ -157,9 +157,9 @@
       v-if="showDetailsModal" 
       class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 fade-in"
     >
-      <div class="bg-white rounded-xl p-6 shadow-xl w-full max-w-md mx-4">
+      <div class="bg-white rounded-xl p-6 shadow-xl w-full max-w-lg mx-4">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold">Instalment Details</h3>
+          <h3 class="text-lg font-bold">Detailed Instalment Information</h3>
           <button @click="showDetailsModal = false" class="text-gray-400 hover:text-gray-500">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -167,7 +167,7 @@
           </button>
         </div>
         
-        <div class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <p class="text-sm text-gray-500">Description</p>
             <p class="font-medium">{{ selectedInstalment.description }}</p>
@@ -177,17 +177,18 @@
             <p class="font-medium">{{ selectedInstalment.dueDate }}</p>
           </div>
           <div>
-            <p class="text-sm text-gray-500">Amount</p>
+            <p class="text-sm text-gray-500">Payment Amount</p>
             <p class="font-medium">${{ selectedInstalment.amount?.toFixed(2) }}</p>
           </div>
           <div>
-            <p class="text-sm text-gray-500">Status</p>
+            <p class="text-sm text-gray-500">Payment Status</p>
             <span 
               class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" 
               :class="{
                 'bg-warning-100 text-warning-800': selectedInstalment.status === 'Due Soon',
                 'bg-error-100 text-error-800': selectedInstalment.status === 'Overdue',
-                'bg-gray-100 text-gray-800': selectedInstalment.status === 'Upcoming'
+                'bg-gray-100 text-gray-800': selectedInstalment.status === 'Upcoming',
+                'bg-success-100 text-success-800': selectedInstalment.status === 'Paid'
               }"
             >
               {{ selectedInstalment.status }}
@@ -197,9 +198,74 @@
             <p class="text-sm text-gray-500">Payment Reference</p>
             <p class="font-medium">{{ selectedInstalment.reference }}</p>
           </div>
+          <div>
+            <p class="text-sm text-gray-500">Principal Amount</p>
+            <p class="font-medium">${{ (selectedInstalment.amount * 0.85).toFixed(2) }}</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Interest</p>
+            <p class="font-medium">${{ (selectedInstalment.amount * 0.15).toFixed(2) }}</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Payment Method</p>
+            <p class="font-medium">{{ selectedInstalment.paymentMethod || 'Not yet paid' }}</p>
+          </div>
         </div>
         
-        <div class="mt-6 flex justify-end space-x-3">
+        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+          <h4 class="font-medium mb-2">Purpose of Payment</h4>
+          <p class="text-gray-700">{{ selectedInstalment.purpose || 'This payment represents a monthly instalment for your payment plan agreement. Timely payments help maintain your good payment history.' }}</p>
+        </div>
+        
+        <div class="border-t border-gray-200 pt-6 mt-6">
+          <h4 class="font-medium mb-3">Payment Timeline</h4>
+          <div class="relative">
+            <div class="absolute top-0 left-4 h-full w-0.5 bg-gray-200"></div>
+            <ul class="space-y-6 relative">
+              <li class="flex">
+                <div class="flex-shrink-0">
+                  <div class="h-8 w-8 rounded-full border-2 border-green-500 bg-white flex items-center justify-center z-10 relative">
+                    <svg class="h-4 w-4 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-4 min-w-0">
+                  <p class="text-sm font-medium text-gray-900">Payment Created</p>
+                  <p class="text-sm text-gray-500">March 1, 2025</p>
+                </div>
+              </li>
+              <li class="flex">
+                <div class="flex-shrink-0">
+                  <div class="h-8 w-8 rounded-full border-2 border-yellow-500 bg-white flex items-center justify-center z-10 relative">
+                    <svg class="h-4 w-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-4 min-w-0">
+                  <p class="text-sm font-medium text-gray-900">Due Date</p>
+                  <p class="text-sm text-gray-500">{{ selectedInstalment.dueDate }}</p>
+                </div>
+              </li>
+              <li v-if="selectedInstalment.status === 'Paid'" class="flex">
+                <div class="flex-shrink-0">
+                  <div class="h-8 w-8 rounded-full border-2 border-green-500 bg-white flex items-center justify-center z-10 relative">
+                    <svg class="h-4 w-4 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-4 min-w-0">
+                  <p class="text-sm font-medium text-gray-900">Payment Completed</p>
+                  <p class="text-sm text-gray-500">{{ selectedInstalment.paidDate || 'April 15, 2025' }}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="mt-6 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3">
           <button @click="showDetailsModal = false" class="btn-outline">
             Close
           </button>
@@ -207,7 +273,7 @@
             @click="payInstalment(selectedInstalment)"
             class="btn-primary"
           >
-            Pay Now
+            Proceed to Payment
           </button>
         </div>
       </div>
