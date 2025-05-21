@@ -135,16 +135,36 @@
           </div>
         </div>
         
-        <div class="flex flex-col sm:flex-row justify-between space-y-4 sm:space-y-0">
-          <NuxtLink to="/payments" class="btn-outline">
-            Back to Instalments
-          </NuxtLink>
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row justify-between space-y-4 sm:space-y-0 sm:space-x-3">
+          <button @click="cancelPayment" class="btn-outline">
+            Cancel the payment
+          </button>
           <button 
             @click="proceedToPayment" 
-            class="btn-primary"
+            class="btn-primary flex items-center"
           >
-            Proceed to Payment
+            <span>Proceed to Payment</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
           </button>
+        </div>
+        
+        <!-- Payment Gateway Notice -->
+        <div class="mt-6 bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-blue-700">
+                You will be redirected to an external payment gateway to complete your payment. After completion, a payment confirmation will be sent to your email and phone.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -216,5 +236,11 @@ const proceedToPayment = () => {
   // In a real app, this would initiate the Mapco payment gateway integration
   // For now, just redirect to confirmation page
   router.push('/payments/confirmation');
+};
+
+// Method to cancel the payment
+const cancelPayment = () => {
+  // Logic to cancel the payment and navigate away
+  router.push('/payments');
 };
 </script>
