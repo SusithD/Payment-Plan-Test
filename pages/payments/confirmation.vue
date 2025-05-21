@@ -1,202 +1,273 @@
 <template>
   <div class="fade-in">
-    <div class="container-custom py-12">
-      <div class="max-w-3xl mx-auto">
-        <!-- Steps Indicator -->
-        <div class="flex justify-between mb-8">
-          <div class="flex flex-col items-center">
-            <div class="h-8 w-8 bg-primary-500 text-white rounded-full flex items-center justify-center">
-              1
-            </div>
-            <span class="text-sm font-medium text-primary-700 mt-2">Select Instalments</span>
-          </div>
-          <div class="flex-1 flex items-center px-4">
-            <div class="h-1 w-full bg-primary-500"></div>
-          </div>
-          <div class="flex flex-col items-center">
-            <div class="h-8 w-8 bg-primary-500 text-white rounded-full flex items-center justify-center">
-              2
-            </div>
-            <span class="text-sm font-medium text-primary-700 mt-2">Review Payment</span>
-          </div>
-          <div class="flex-1 flex items-center px-4">
-            <div class="h-1 w-full bg-primary-500"></div>
-          </div>
-          <div class="flex flex-col items-center">
-            <div class="h-8 w-8 bg-primary-500 text-white rounded-full flex items-center justify-center">
-              3
-            </div>
-            <span class="text-sm font-medium text-primary-700 mt-2">Confirmation</span>
-          </div>
+    <!-- Enhanced Header Section with Status Banner -->
+    <div v-if="status === 'success'" class="bg-success-500 text-white">
+      <div class="container-custom py-3 px-4">
+        <div class="flex items-center">
+          <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="font-medium">Payment successfully processed!</span>
         </div>
-        
-        <!-- Success Message -->
-        <div v-if="paymentStatus === 'success'" class="card text-center mb-8">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-success-100 text-success-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
-          <p class="text-lg text-gray-600 mb-6">
-            Your payment of ${{ totalAmount.toFixed(2) }} has been successfully processed.
-          </p>
-          <div class="bg-gray-50 rounded-lg p-4 inline-block">
-            <p class="text-sm text-gray-600">Transaction Reference</p>
-            <p class="text-lg font-bold text-gray-900">{{ transactionReference }}</p>
-          </div>
-          
-          <!-- Notification Info -->
-          <div class="mt-6 bg-green-50 border-l-4 border-green-400 p-4 rounded text-left">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <p class="text-sm text-green-700">
-                  A payment confirmation has been sent to your email ({{ userEmail }}) and via SMS to {{ userPhone }}.
-                </p>
-              </div>
-            </div>
-          </div>
+      </div>
+    </div>
+    
+    <div v-if="status === 'error'" class="bg-error-500 text-white">
+      <div class="container-custom py-3 px-4">
+        <div class="flex items-center">
+          <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="font-medium">Payment failed. Please try again.</span>
         </div>
-        
-        <!-- Failure Message -->
-        <div v-if="paymentStatus === 'failed'" class="card text-center mb-8">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-error-100 text-error-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
+      </div>
+    </div>
+
+    <div class="bg-white shadow">
+      <div class="container-custom py-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div class="mb-4 md:mb-0">
+            <div class="flex items-center">
+              <h1 class="text-2xl font-bold text-gray-900">Payment Confirmation</h1>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">Your payment details and receipt</p>
           </div>
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">Payment Failed</h1>
-          <p class="text-lg text-gray-600 mb-6">
-            Your payment could not be processed. {{ failureReason }}
-          </p>
-          
-          <div class="bg-error-50 rounded-lg p-4 inline-block mb-6">
-            <p class="text-sm text-error-700">Error Code: {{ errorCode }}</p>
-          </div>
-          
-          <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <button @click="retryPayment" class="btn-primary">
-              Try Again
-            </button>
-            <button @click="changePaymentMethod" class="btn-outline">
-              Change Payment Method
-            </button>
-          </div>
-        </div>
-        
-        <!-- Payment Details -->
-        <div v-if="paymentStatus === 'success'" class="card mb-8">
-          <h2 class="text-xl font-bold mb-4">Payment Details</h2>
-          
-          <div class="space-y-4">
-            <div class="flex justify-between pb-3 border-b border-gray-200">
-              <span class="text-gray-600">Payment Date:</span>
-              <span class="font-medium">{{ paymentDate }}</span>
-            </div>
-            <div class="flex justify-between pb-3 border-b border-gray-200">
-              <span class="text-gray-600">Payment Method:</span>
-              <span class="font-medium">{{ paymentMethod }}</span>
-            </div>
-            <div class="flex justify-between pb-3 border-b border-gray-200">
-              <span class="text-gray-600">Amount Paid:</span>
-              <span class="font-medium">${{ (totalAmount - processingFee).toFixed(2) }}</span>
-            </div>
-            <div class="flex justify-between pb-3 border-b border-gray-200">
-              <span class="text-gray-600">Processing Fee:</span>
-              <span class="font-medium">${{ processingFee.toFixed(2) }}</span>
-            </div>
-            <div class="flex justify-between font-bold">
-              <span>Total:</span>
-              <span>${{ totalAmount.toFixed(2) }}</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Paid Instalments -->
-        <div v-if="paymentStatus === 'success'" class="card mb-8">
-          <h2 class="text-xl font-bold mb-4">Paid Instalments</h2>
-          
-          <div class="space-y-4">
-            <div 
-              v-for="(instalment, index) in paidInstalments" 
-              :key="index"
-              class="flex justify-between items-center p-3 border-b border-gray-200 last:border-b-0"
-            >
-              <div>
-                <p class="font-medium">{{ instalment.description }}</p>
-                <p class="text-sm text-gray-600">Due: {{ instalment.dueDate }}</p>
-              </div>
-              <div class="text-right">
-                <p class="font-bold">${{ instalment.amount.toFixed(2) }}</p>
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800">
-                  Paid
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Remaining Instalments -->
-        <div v-if="paymentStatus === 'failed'" class="card mb-8">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Unpaid Instalments</h2>
-            <span class="bg-warning-100 text-warning-800 px-3 py-1 rounded-full text-xs font-medium">
-              Pending Payment
+          <div class="flex items-center">
+            <span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full font-medium">
+              Step 3 of 3
             </span>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-custom py-8">
+      <!-- Confirmation Card -->
+      <div v-if="status === 'success'" class="mb-8 text-center">
+        <div class="mx-auto bg-success-100 rounded-full h-24 w-24 flex items-center justify-center mb-6">
+          <svg class="h-12 w-12 text-success-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h2>
+        <p class="text-gray-600 max-w-md mx-auto">
+          Your payment has been processed successfully. A confirmation has been sent to your email address and phone number.
+        </p>
+        
+        <div class="mt-8 inline-flex items-center px-4 py-2 bg-gray-100 rounded-lg">
+          <svg class="h-5 w-5 text-gray-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
+          </svg>
+          <span class="text-gray-600">Rate your payment experience</span>
+          <div class="ml-2 flex">
+            <button v-for="i in 5" :key="i" class="text-gray-300 hover:text-yellow-500 focus:text-yellow-500 ml-1">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div v-if="status === 'error'" class="mb-8 text-center">
+        <div class="mx-auto bg-error-100 rounded-full h-24 w-24 flex items-center justify-center mb-6">
+          <svg class="h-12 w-12 text-error-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Payment Failed</h2>
+        <p class="text-gray-600 max-w-md mx-auto">
+          We couldn't process your payment. Please check your payment details and try again.
+        </p>
+        
+        <button @click="retryPayment" class="mt-6 btn-primary">
+          Try Again
+        </button>
+      </div>
+      
+      <!-- Payment Details Card -->
+      <div v-if="status === 'success'" class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8">
+        <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+          <h2 class="text-xl font-bold text-gray-900">Payment Receipt</h2>
+          <button @click="downloadReceipt" class="btn-outline-sm flex items-center">
+            <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Download PDF
+          </button>
+        </div>
+        
+        <div class="p-6">
+          <!-- Receipt Details -->
+          <div class="mb-8 pb-6 border-b border-gray-100">
+            <div class="flex flex-col sm:flex-row justify-between mb-6">
+              <div>
+                <h3 class="text-sm uppercase font-medium text-gray-500">Receipt No.</h3>
+                <p class="font-medium text-gray-900">{{ receipt.id }}</p>
+              </div>
+              <div class="mt-4 sm:mt-0">
+                <h3 class="text-sm uppercase font-medium text-gray-500">Date & Time</h3>
+                <p class="font-medium text-gray-900">{{ receipt.date }}</p>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <h3 class="text-sm uppercase font-medium text-gray-500">Payment Method</h3>
+                <div class="flex items-center mt-1">
+                  <span class="h-8 w-8 bg-gray-100 rounded-full flex items-center justify-center mr-2">
+                    <span class="text-xs font-semibold">{{ receipt.paymentMethod[0] }}</span>
+                  </span>
+                  <span class="font-medium text-gray-900">{{ receipt.paymentMethod }}</span>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="text-sm uppercase font-medium text-gray-500">Status</h3>
+                <div class="mt-1">
+                  <span class="bg-success-100 text-success-800 text-xs px-2.5 py-1 rounded-full font-medium">
+                    {{ receipt.status }}
+                  </span>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="text-sm uppercase font-medium text-gray-500">Transaction ID</h3>
+                <p class="font-medium text-gray-900">{{ receipt.transactionId }}</p>
+              </div>
+            </div>
+          </div>
           
+          <!-- Items Paid For -->
+          <h3 class="font-medium text-gray-900 mb-4">Items Paid</h3>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+              <thead>
                 <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Due Date
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Description
                   </th>
-                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Due Date
+                  </th>
+                  <th class="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Amount
                   </th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="(instalment, index) in unpaidInstalments" :key="index">
+                <tr v-for="(item, index) in receipt.items" :key="index">
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ instalment.dueDate }}
+                    {{ item.description }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ instalment.description }}
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ item.dueDate }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-right">
-                    ${{ instalment.amount.toFixed(2) }}
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                    ${{ item.amount.toFixed(2) }}
                   </td>
                 </tr>
               </tbody>
+              <tfoot>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" colspan="2">
+                    Subtotal
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-right">
+                    ${{ receipt.subtotal.toFixed(2) }}
+                  </td>
+                </tr>
+                <tr v-if="receipt.processingFee > 0">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" colspan="2">
+                    Processing Fee ({{ receipt.processingFeePercentage }}%)
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                    ${{ receipt.processingFee.toFixed(2) }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-900" colspan="2">
+                    Total
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-900 text-right">
+                    ${{ receipt.total.toFixed(2) }}
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
+      </div>
+      
+      <!-- Impact Information Card -->
+      <div v-if="status === 'success'" class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8">
+        <div class="px-6 py-5 border-b border-gray-100">
+          <h2 class="text-xl font-bold text-gray-900">Payment Impact</h2>
+        </div>
         
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row justify-between space-y-4 sm:space-y-0">
-          <button 
-            v-if="paymentStatus === 'success'"
-            @click="downloadReceipt" 
-            class="btn-outline flex items-center justify-center space-x-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            <span>Download Receipt</span>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="text-center p-4 border border-gray-100 rounded-lg">
+              <div class="text-3xl font-bold text-success-600 mb-1">
+                {{ paymentImpact.planProgress }}%
+              </div>
+              <p class="text-gray-500 text-sm">Payment Plan Progress</p>
+            </div>
+            
+            <div class="text-center p-4 border border-gray-100 rounded-lg">
+              <div class="text-3xl font-bold text-primary-600 mb-1">
+                ${{ paymentImpact.remainingBalance.toFixed(0) }}
+              </div>
+              <p class="text-gray-500 text-sm">Remaining Balance</p>
+            </div>
+            
+            <div class="text-center p-4 border border-gray-100 rounded-lg">
+              <div class="text-3xl font-bold text-gray-900 mb-1">
+                {{ paymentImpact.nextPaymentDate }}
+              </div>
+              <p class="text-gray-500 text-sm">Next Payment Due</p>
+            </div>
+            
+            <div class="text-center p-4 border border-gray-100 rounded-lg">
+              <div class="text-3xl font-bold text-warning-600 mb-1">
+                ${{ paymentImpact.nextPaymentAmount }}
+              </div>
+              <p class="text-gray-500 text-sm">Next Payment Amount</p>
+            </div>
+          </div>
+          
+          <div class="mt-6 bg-blue-50 p-4 rounded-lg">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-blue-800">About Your Payment Plan</h3>
+                <div class="mt-2 text-sm text-blue-700">
+                  <p>Your timely payment has contributed positively to your payment plan. Continue making payments on time to avoid late fees and maintain a good payment history.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-between">
+        <NuxtLink to="/history" class="btn-outline mt-3 sm:mt-0">
+          View Payment History
+        </NuxtLink>
+        
+        <div class="space-x-2 mt-3 sm:mt-0">
+          <button v-if="status === 'error'" @click="retryPayment" class="btn-primary">
+            Try Again
           </button>
-          <NuxtLink to="/dashboard" class="btn-primary">
-            Back to Dashboard
+          <NuxtLink v-if="status === 'success'" to="/dashboard" class="btn-primary">
+            Go to Dashboard
           </NuxtLink>
         </div>
       </div>
@@ -205,95 +276,64 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 definePageMeta({
   layout: 'default',
 });
 
 const router = useRouter();
+const route = useRoute();
+const status = ref('success'); // Default to success
 
-// Payment status - would be determined by the response from payment gateway
-// Options: 'success', 'failed'
-const paymentStatus = ref('success'); // Default to success for demo
+// Mock receipt data
+const receipt = ref({
+  id: 'RCT-2025-0521-001',
+  date: 'May 21, 2025 14:30:45',
+  paymentMethod: 'Credit Card',
+  status: 'Success',
+  transactionId: 'TXN-12345-ABCDE',
+  items: [
+    {
+      description: 'Monthly Instalment (May)',
+      dueDate: 'May 15, 2025',
+      amount: 250.00
+    },
+    {
+      description: 'Monthly Instalment (April)',
+      dueDate: 'April 15, 2025',
+      amount: 250.00
+    }
+  ],
+  subtotal: 500.00,
+  processingFee: 12.50,
+  processingFeePercentage: 2.5,
+  total: 512.50
+});
 
-// Mock user data
-const userEmail = ref('john.doe@example.com');
-const userPhone = ref('+1 (555) 123-4567');
+// Mock payment impact data
+const paymentImpact = ref({
+  planProgress: 45,
+  remainingBalance: 1500,
+  nextPaymentDate: 'Jun 15',
+  nextPaymentAmount: 250
+});
 
-// Mock transaction details
-const transactionReference = ref('TRX-2025-0423');
-const paymentDate = ref('May 21, 2025, 14:30 PM');
-const paymentMethod = ref('Credit Card (ending in 4242)');
-const processingFee = ref(5.00);
-const totalAmount = ref(505.00);
-const errorCode = ref('ERR-4032');
-const failureReason = ref('The transaction was declined by your card issuer. Please try a different payment method or contact your bank.');
-
-// Mock paid instalments data
-const paidInstalments = [
-  {
-    id: 1,
-    dueDate: 'May 15, 2025',
-    description: 'Monthly Instalment',
-    amount: 250.00,
-    status: 'Paid',
-    reference: 'INS-2025-0501'
-  },
-  {
-    id: 2,
-    dueDate: 'June 15, 2025',
-    description: 'Monthly Instalment',
-    amount: 250.00,
-    status: 'Paid',
-    reference: 'INS-2025-0601'
+onMounted(() => {
+  // Check URL parameters for status
+  if (route.query.status) {
+    status.value = route.query.status;
   }
-];
+});
 
-// Mock unpaid instalments (shown on failure)
-const unpaidInstalments = [
-  {
-    id: 1,
-    dueDate: 'May 15, 2025',
-    description: 'Monthly Instalment',
-    amount: 250.00,
-    status: 'Due Soon',
-    reference: 'INS-2025-0501'
-  },
-  {
-    id: 2,
-    dueDate: 'June 15, 2025',
-    description: 'Monthly Instalment',
-    amount: 250.00,
-    status: 'Upcoming',
-    reference: 'INS-2025-0601'
-  }
-];
-
-// Method to download receipt (just a placeholder in this demo)
+// Function to download a receipt (would be implemented properly in a real app)
 const downloadReceipt = () => {
-  alert('In a real application, this would download a PDF receipt.');
+  alert('In a real app, this would generate and download a PDF receipt.');
 };
 
-// Method to retry the payment
+// Function to retry a failed payment
 const retryPayment = () => {
-  // In a real app, this would redirect back to the payment gateway
   router.push('/payments/review');
 };
-
-// Method to change payment method
-const changePaymentMethod = () => {
-  // In a real app, this would go back to the review page to change payment method
-  router.push('/payments/review');
-};
-
-// For demonstration purposes, allow toggling between success and failure
-// In a real app, this would be determined by the payment gateway response
-if (import.meta.env.DEV) {
-  setTimeout(() => {
-    // Uncomment to test the failure state
-    // paymentStatus.value = 'failed';
-  }, 500);
-}
 </script>
