@@ -109,23 +109,41 @@
 
             <div class="form-group">
               <label for="mobile" class="form-label inline-block mb-2 font-medium text-gray-700">Mobile number</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                  </svg>
-                </span>
-                <input 
-                  id="mobile" 
-                  v-model="mobile" 
-                  type="tel" 
-                  autocomplete="tel" 
-                  required 
-                  class="auth-input pl-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
-                  placeholder="Enter your mobile number"
-                  :class="{'border-red-300 focus:ring-red-500': mobileError}"
-                />
+              <div class="flex">
+                <div class="relative">
+                  <select 
+                    v-model="countryCode" 
+                    class="auth-input w-28 pl-8 pr-6 focus:ring-2 focus:ring-primary-500 transition-all duration-200 rounded-r-none border-r-0"
+                  >
+                    <option v-for="country in countries" :key="country.code" :value="country.code">
+                      {{ country.code }}
+                    </option>
+                  </select>
+                  <span class="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </span>
+                  <span class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                    <svg class="h-4 w-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+                <div class="relative flex-1">
+                  <input 
+                    id="mobile" 
+                    v-model="mobile" 
+                    type="tel" 
+                    autocomplete="tel" 
+                    required 
+                    class="auth-input w-full pl-3 focus:ring-2 focus:ring-primary-500 transition-all duration-200 rounded-l-none" 
+                    placeholder="Enter your mobile number"
+                    :class="{'border-red-300 focus:ring-red-500': mobileError}"
+                  />
+                </div>
               </div>
+              <p class="mt-2 text-xs text-gray-500">We'll send verification code to this number</p>
               <p v-if="mobileError" class="mt-1 text-sm text-red-500">{{ mobileError }}</p>
             </div>
           </div>
@@ -174,9 +192,8 @@
               <label for="confirm-password" class="form-label inline-block mb-2 font-medium text-gray-700">Confirm password</label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"/>
                     <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                  </svg>
                 </span>
                 <input 
                   id="confirm-password" 
@@ -430,6 +447,54 @@ const emailError = ref('');
 const mobileError = ref('');
 const passwordError = ref('');
 const confirmPasswordError = ref('');
+const countryCode = ref('+1'); // Default country code
+const countries = ref([
+  { code: '+1', name: 'United States/Canada' },
+  { code: '+44', name: 'United Kingdom' },
+  { code: '+91', name: 'India' },
+  { code: '+61', name: 'Australia' },
+  { code: '+64', name: 'New Zealand' },
+  { code: '+49', name: 'Germany' },
+  { code: '+33', name: 'France' },
+  { code: '+81', name: 'Japan' },
+  { code: '+86', name: 'China' },
+  { code: '+65', name: 'Singapore' },
+  { code: '+971', name: 'United Arab Emirates' },
+  { code: '+966', name: 'Saudi Arabia' },
+  { code: '+27', name: 'South Africa' },
+  { code: '+234', name: 'Nigeria' },
+  { code: '+55', name: 'Brazil' },
+  { code: '+52', name: 'Mexico' },
+  { code: '+31', name: 'Netherlands' },
+  { code: '+46', name: 'Sweden' },
+  { code: '+47', name: 'Norway' },
+  { code: '+45', name: 'Denmark' },
+  { code: '+358', name: 'Finland' },
+  { code: '+39', name: 'Italy' },
+  { code: '+34', name: 'Spain' },
+  { code: '+351', name: 'Portugal' },
+  { code: '+41', name: 'Switzerland' },
+  { code: '+43', name: 'Austria' },
+  { code: '+32', name: 'Belgium' },
+  { code: '+353', name: 'Ireland' },
+  { code: '+48', name: 'Poland' },
+  { code: '+420', name: 'Czech Republic' },
+  { code: '+36', name: 'Hungary' },
+  { code: '+30', name: 'Greece' },
+  { code: '+7', name: 'Russia' },
+  { code: '+82', name: 'South Korea' },
+  { code: '+66', name: 'Thailand' },
+  { code: '+60', name: 'Malaysia' },
+  { code: '+62', name: 'Indonesia' },
+  { code: '+63', name: 'Philippines' },
+  { code: '+84', name: 'Vietnam' },
+  { code: '+880', name: 'Bangladesh' },
+  { code: '+92', name: 'Pakistan' },
+  { code: '+94', name: 'Sri Lanka' },
+  { code: '+977', name: 'Nepal' },
+  { code: '+20', name: 'Egypt' },
+  { code: '+972', name: 'Israel' }
+]);
 
 const togglePassword = () => {
   showPassword.value = !showPassword.value;

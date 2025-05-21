@@ -151,15 +151,40 @@
                   
                   <div class="sm:col-span-6">
                     <label for="phone" class="form-label">Contact Number</label>
-                    <input 
-                      type="tel" 
-                      name="phone" 
-                      id="phone" 
-                      autocomplete="tel" 
-                      v-model="profile.phone"
-                      class="form-input"
-                      :disabled="!isEditing"
-                    />
+                    <div class="flex">
+                      <div class="relative">
+                        <select 
+                          v-model="profile.countryCode" 
+                          class="form-input w-28 pl-8 pr-6 focus:ring-2 focus:ring-primary-500 transition-all duration-200 rounded-r-none border-r-0"
+                          :disabled="!isEditing"
+                        >
+                          <option v-for="country in countries" :key="country.code" :value="country.code">
+                            {{ country.code }}
+                          </option>
+                        </select>
+                        <span class="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                          </svg>
+                        </span>
+                        <span class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                          <svg class="h-4 w-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="relative flex-1">
+                        <input 
+                          type="tel" 
+                          name="phone" 
+                          id="phone" 
+                          autocomplete="tel" 
+                          v-model="profile.phoneNumber"
+                          class="form-input w-full pl-3 focus:ring-2 focus:ring-primary-500 transition-all duration-200 rounded-l-none"
+                          :disabled="!isEditing"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div class="sm:col-span-6">
@@ -534,6 +559,40 @@ const selectedPayment = ref({});
 const isEditing = ref(false);
 const isEditingPayment = ref(false);
 
+// Country codes for phone numbers
+const countries = ref([
+  { code: '+1', name: 'United States/Canada' },
+  { code: '+44', name: 'United Kingdom' },
+  { code: '+91', name: 'India' },
+  { code: '+61', name: 'Australia' },
+  { code: '+64', name: 'New Zealand' },
+  { code: '+49', name: 'Germany' },
+  { code: '+33', name: 'France' },
+  { code: '+81', name: 'Japan' },
+  { code: '+86', name: 'China' },
+  { code: '+65', name: 'Singapore' },
+  { code: '+971', name: 'United Arab Emirates' },
+  { code: '+966', name: 'Saudi Arabia' },
+  { code: '+27', name: 'South Africa' },
+  { code: '+234', name: 'Nigeria' },
+  { code: '+55', name: 'Brazil' },
+  { code: '+52', name: 'Mexico' },
+  // Add more countries as needed
+]);
+
+// Parse the full phone number into country code and phone number
+const parsePhoneNumber = (fullPhone) => {
+  // Simple parsing - assumes format like "+1 (555) 123-4567"
+  const match = fullPhone.match(/^(\+\d+)\s+(.*)/);
+  if (match) {
+    return {
+      countryCode: match[1],
+      phoneNumber: match[2]
+    };
+  }
+  return { countryCode: '+1', phoneNumber: fullPhone };
+};
+
 // Personal details
 const originalProfile = reactive({
   firstName: 'John',
@@ -544,7 +603,10 @@ const originalProfile = reactive({
 });
 
 // Create a copy of the profile that we can edit
-const profile = reactive({ ...originalProfile });
+const profile = reactive({ 
+  ...originalProfile,
+  ...parsePhoneNumber(originalProfile.phone)
+});
 
 // Payment details
 const originalPaymentDetails = reactive({
@@ -618,9 +680,15 @@ const cancelEditing = () => {
 
 // Save profile changes
 const saveProfile = () => {
-  // In a real app, this would send the updated profile to the backend
-  // For now, just update our local original copy
-  Object.assign(originalProfile, profile);
+  // Combine country code and phone number into single phone field
+  originalProfile.phone = `${profile.countryCode} ${profile.phoneNumber}`;
+  
+  // Copy other properties
+  originalProfile.firstName = profile.firstName;
+  originalProfile.lastName = profile.lastName;
+  originalProfile.email = profile.email;
+  originalProfile.address = profile.address;
+  
   isEditing.value = false;
   
   // Show success message (would be toast notification in real app)
