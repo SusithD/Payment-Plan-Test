@@ -223,102 +223,135 @@
           <!-- Payment Details Section -->
           <div v-if="activeSection === 'payment'" class="card">
             <div class="flex justify-between items-center mb-6">
-              <h2 class="text-xl font-bold">View/Update Payment Details</h2>
-              <button 
-                v-if="!isEditingPayment" 
-                @click="startEditingPayment" 
-                class="btn-outline py-1.5 px-3 text-sm"
-              >
-                Edit
-              </button>
+              <h2 class="text-xl font-bold">Payment Methods</h2>
+              <NuxtLink to="/payments/add-method" class="btn-primary py-1.5 px-3 text-sm">
+                Add New Method
+              </NuxtLink>
             </div>
             
-            <form @submit.prevent="savePaymentDetails">
-              <div class="space-y-6">
-                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div class="sm:col-span-6">
-                    <label for="card-holder" class="form-label">Card Holder Name</label>
-                    <input 
-                      type="text" 
-                      name="card-holder" 
-                      id="card-holder" 
-                      v-model="paymentDetails.cardHolder"
-                      class="form-input"
-                      :disabled="!isEditingPayment"
-                    />
+            <div v-if="paymentMethods.length === 0" class="text-center py-8">
+              <div class="mx-auto h-12 w-12 text-gray-400 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900 mb-1">No payment methods</h3>
+              <p class="text-gray-500 mb-4">You haven't added any payment methods yet.</p>
+              <NuxtLink to="/payments/add-method" class="btn-primary">
+                Add Payment Method
+              </NuxtLink>
+            </div>
+            
+            <div v-else class="space-y-4">
+              <!-- Payment method cards -->
+              <div 
+                v-for="(method, index) in paymentMethods" 
+                :key="index"
+                class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow"
+              >
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center space-x-3">
+                    <!-- Card Icon based on type - Replaced with inline SVGs -->
+                    <div class="h-10 w-14 flex items-center justify-center rounded bg-gray-50">
+                      <!-- Visa Card SVG -->
+                      <svg 
+                        v-if="method.brand === 'visa'" 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 48 48" 
+                        class="h-6"
+                      >
+                        <path fill="#1565C0" d="M45,35c0,2.209-1.791,4-4,4H7c-2.209,0-4-1.791-4-4V13c0-2.209,1.791-4,4-4h34c2.209,0,4,1.791,4,4V35z"/>
+                        <path fill="#FFF" d="M15.186 19l-2.626 7.832c0 0-.667-3.313-.733-3.729-1.495-3.411-3.701-3.221-3.701-3.221L10.726 30v-.002h3.161L18.258 19H15.186zM17.689 30L20.56 30 22.296 19 19.389 19zM38.008 19h-3.021l-4.71 11h2.852l.588-1.571h3.596L37.619 30h2.613L38.008 19zM34.513 26.328l1.563-4.157.818 4.157H34.513zM26.369 22.206c0-.606.498-1.057 1.926-1.057.928 0 1.991.302 1.991.302l.466-2.158c0 0-1.358-.515-2.691-.515-3.019 0-4.576 1.444-4.576 3.272 0 3.294 3.979 2.824 3.979 4.38 0 .513-.545.884-1.7.884-1.407 0-2.773-.486-2.773-.486l-.495 2.202c0 0 1.303.594 3.132.594 2.744 0 4.576-1.39 4.576-3.258C30.205 23.175 26.369 23.457 26.369 22.206z"/>
+                      </svg>
+                      
+                      <!-- Mastercard SVG -->
+                      <svg 
+                        v-else-if="method.brand === 'mastercard'" 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 48 48" 
+                        class="h-6"
+                      >
+                        <path fill="#FF5F00" d="M32,25H16V8h16V25z"/>
+                        <path fill="#EB001B" d="M19.5,16.5c0-3.59,1.69-6.79,4.3-8.86c-1.89-1.47-4.24-2.33-6.8-2.33c-6.14,0-11.14,5-11.14,11.14 s5,11.14,11.14,11.14c2.56,0,4.91-0.87,6.8-2.33C21.19,23.29,19.5,20.09,19.5,16.5z"/>
+                        <path fill="#F79E1B" d="M42,16.5c0,6.14-5,11.14-11.14,11.14c-2.56,0-4.91-0.87-6.8-2.33c2.61-2.08,4.3-5.27,4.3-8.86 s-1.69-6.79-4.3-8.86c1.89-1.47,4.24-2.33,6.8-2.33C37,5.36,42,10.36,42,16.5z"/>
+                      </svg>
+                      
+                      <!-- American Express SVG -->
+                      <svg 
+                        v-else-if="method.brand === 'amex'" 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 48 48" 
+                        class="h-6"
+                      >
+                        <path fill="#1976D2" d="M45,35c0,2.209-1.791,4-4,4H7c-2.209,0-4-1.791-4-4V13c0-2.209,1.791-4,4-4h34c2.209,0,4,1.791,4,4V35z"/>
+                        <path fill="#FFF" d="M22.255 20l-2.113 4.683L18.039 20h-2.695v6.726L12.341 20h-2.274L7 26.981h1.815l.642-1.47h3.312l.642 1.47h3.001v-5.227l2.127 5.227l2.127-5.246v5.246H22.5v-7H22.255zM10.132 24.068l.996-2.3.997 2.3H10.132zM33.5 26.981h2.403L33.5 23.488v-3.507h-3.866l-1.282 2.918L27.117 20H23.25v7H27v-4.99l1.883 2.99h.001v-3.004L30.7 26.981h1.883v-5.1L33.5 26.981zM40.936 26.981h1.815l-3.067-6.999h-2.274l-3.067 6.999h1.815l.642-1.47h3.494L40.936 26.981zM39.678 24.068h-2.178l1.09-2.511L39.678 24.068z"/>
+                      </svg>
+                      
+                      <!-- Generic Card SVG for other card types -->
+                      <svg 
+                        v-else
+                        xmlns="http://www.w3.org/2000/svg" 
+                        class="h-6 w-6 text-gray-400" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                      </svg>
+                    </div>
+                    
+                    <div>
+                      <div class="font-medium">
+                        {{ method.brand.charAt(0).toUpperCase() + method.brand.slice(1) }} •••• {{ method.last4 }}
+                        <span 
+                          v-if="method.isDefault" 
+                          class="ml-2 px-2 py-0.5 text-xs bg-primary-100 text-primary-800 rounded"
+                        >
+                          Default
+                        </span>
+                      </div>
+                      <div class="text-sm text-gray-500">
+                        Expires {{ method.expMonth }}/{{ method.expYear }}
+                      </div>
+                    </div>
                   </div>
                   
-                  <div class="sm:col-span-6">
-                    <label for="card-number" class="form-label">Card Number</label>
-                    <input 
-                      type="text" 
-                      name="card-number" 
-                      id="card-number" 
-                      v-model="paymentDetails.cardNumber"
-                      class="form-input"
-                      :disabled="!isEditingPayment"
-                      placeholder="•••• •••• •••• ••••"
-                      maxlength="19"
-                    />
-                  </div>
-                  
-                  <div class="sm:col-span-3">
-                    <label for="expiry-date" class="form-label">Expiry Date</label>
-                    <input 
-                      type="text" 
-                      name="expiry-date" 
-                      id="expiry-date" 
-                      v-model="paymentDetails.expiryDate"
-                      class="form-input"
-                      :disabled="!isEditingPayment"
-                      placeholder="MM/YY"
-                    />
-                  </div>
-                  
-                  <div class="sm:col-span-3">
-                    <label for="cvv" class="form-label">CVV</label>
-                    <input 
-                      type="password" 
-                      name="cvv" 
-                      id="cvv" 
-                      v-model="paymentDetails.cvv"
-                      class="form-input"
-                      :disabled="!isEditingPayment"
-                      placeholder="•••"
-                      maxlength="3"
-                    />
-                  </div>
-                  
-                  <div class="sm:col-span-6">
-                    <label for="billing-address" class="form-label">Billing Address</label>
-                    <input 
-                      type="text" 
-                      name="billing-address" 
-                      id="billing-address" 
-                      v-model="paymentDetails.billingAddress"
-                      class="form-input"
-                      :disabled="!isEditingPayment"
-                    />
+                  <div class="flex space-x-1">
+                    <button 
+                      v-if="!method.isDefault"
+                      @click="setAsDefault(method.id)"
+                      class="p-1.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-50 rounded-md"
+                      title="Set as default"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </button>
+                    <button 
+                      @click="removePaymentMethod(method.id)"
+                      class="p-1.5 text-sm text-gray-600 hover:text-error-600 hover:bg-gray-50 rounded-md"
+                      title="Remove"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
+                
+                <div class="mt-3 flex justify-between text-sm">
+                  <div class="text-gray-500">
+                    {{ method.holderName }}
+                  </div>
+                  <button 
+                    @click="editBillingAddress(method.id)"
+                    class="text-primary-600 hover:text-primary-800"
+                  >
+                    Edit billing address
+                  </button>
+                </div>
               </div>
-              
-              <div v-if="isEditingPayment" class="mt-6 flex justify-end space-x-3">
-                <button 
-                  type="button" 
-                  @click="cancelEditingPayment" 
-                  class="btn-outline"
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
-                  class="btn-primary"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
           
           <!-- Pending Payments Section -->
@@ -537,6 +570,104 @@
         </div>
       </div>
     </div>
+    
+    <!-- Edit Billing Address Modal -->
+    <div v-if="showBillingAddressModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 fade-in">
+      <div class="bg-white rounded-xl p-6 shadow-xl w-full max-w-md mx-4">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold">Edit Billing Address</h3>
+          <button @click="closeBillingAddressModal" class="text-gray-400 hover:text-gray-500">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <form @submit.prevent="saveBillingAddress">
+          <div class="space-y-4 mb-6">
+            <div>
+              <label for="street-address" class="form-label">Street Address</label>
+              <input 
+                type="text" 
+                id="street-address" 
+                v-model="billingAddress.street" 
+                class="form-input"
+                placeholder="123 Main St"
+                required
+              />
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="city" class="form-label">City</label>
+                <input 
+                  type="text" 
+                  id="city" 
+                  v-model="billingAddress.city" 
+                  class="form-input"
+                  placeholder="New York"
+                  required
+                />
+              </div>
+              <div>
+                <label for="state" class="form-label">State</label>
+                <input 
+                  type="text" 
+                  id="state" 
+                  v-model="billingAddress.state" 
+                  class="form-input"
+                  placeholder="NY"
+                  required
+                />
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="postal-code" class="form-label">Postal Code</label>
+                <input 
+                  type="text" 
+                  id="postal-code" 
+                  v-model="billingAddress.postalCode" 
+                  class="form-input"
+                  placeholder="10001"
+                  required
+                />
+              </div>
+              <div>
+                <label for="country" class="form-label">Country</label>
+                <select 
+                  id="country" 
+                  v-model="billingAddress.country" 
+                  class="form-select"
+                  required
+                >
+                  <option value="United States">United States</option>
+                  <option value="Canada">Canada</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Germany">Germany</option>
+                  <option value="France">France</option>
+                  <option value="Japan">Japan</option>
+                  <option value="China">China</option>
+                  <option value="India">India</option>
+                  <!-- Add more countries as needed -->
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex justify-end space-x-3">
+            <button type="button" @click="closeBillingAddressModal" class="btn-outline">
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary">
+              Save Address
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -554,6 +685,17 @@ const showDeleteModal = ref(false);
 const confirmDelete = ref(false);
 const showReceiptModal = ref(false);
 const selectedPayment = ref({});
+const showBillingAddressModal = ref(false);
+const selectedPaymentMethodId = ref(null);
+
+// Billing address state
+const billingAddress = reactive({
+  street: '',
+  city: '',
+  state: '',
+  postalCode: '',
+  country: 'United States'
+});
 
 // Profile editing state
 const isEditing = ref(false);
@@ -619,79 +761,105 @@ const originalPaymentDetails = reactive({
 
 const paymentDetails = reactive({ ...originalPaymentDetails });
 
+// Payment methods data
+const paymentMethods = ref([
+  {
+    id: 'pm_1',
+    brand: 'visa',
+    last4: '4242',
+    expMonth: '12',
+    expYear: '25',
+    holderName: 'John Doe', // Ensure holderName exists
+    isDefault: true,
+    billingAddress: {
+      street: '123 Main St',
+      city: 'New York',
+      state: 'NY',
+      postalCode: '10001',
+      country: 'United States'
+    }
+  },
+  {
+    id: 'pm_2',
+    brand: 'mastercard',
+    last4: '5678',
+    expMonth: '08',
+    expYear: '24',
+    holderName: 'John Doe', // Ensure holderName exists
+    isDefault: false,
+    billingAddress: {
+      street: '456 Park Ave',
+      city: 'San Francisco',
+      state: 'CA',
+      postalCode: '94107',
+      country: 'United States'
+    }
+  }
+]);
+
 // Sample data for pending payments
 const pendingPayments = ref([
   {
-    dueDate: 'May 15, 2025',
-    description: 'Monthly Instalment',
+    id: 'pay_1',
+    dueDate: '2025-06-01',
+    description: 'Monthly Payment - June 2025',
+    amount: 250.00,
+    status: 'Upcoming'
+  },
+  {
+    id: 'pay_2',
+    dueDate: '2025-05-25',
+    description: 'Monthly Payment - May 2025',
     amount: 250.00,
     status: 'Due Soon'
-  },
-  {
-    dueDate: 'June 15, 2025',
-    description: 'Monthly Instalment',
-    amount: 250.00,
-    status: 'Upcoming'
-  },
-  {
-    dueDate: 'July 15, 2025',
-    description: 'Monthly Instalment',
-    amount: 250.00,
-    status: 'Upcoming'
   }
 ]);
 
 // Sample data for completed payments
 const completedPayments = ref([
   {
-    date: 'April 15, 2025',
-    transactionId: 'TXN-2025-0415',
-    description: 'Monthly Instalment',
+    id: 'pay_completed_1',
+    date: '2025-04-15',
+    transactionId: 'TXN123456789',
+    description: 'Monthly Payment - April 2025',
     amount: 250.00,
     last4: '4242'
   },
   {
-    date: 'March 15, 2025',
-    transactionId: 'TXN-2025-0315',
-    description: 'Monthly Instalment',
-    amount: 250.00,
-    last4: '4242'
-  },
-  {
-    date: 'February 15, 2025',
-    transactionId: 'TXN-2025-0215',
-    description: 'Monthly Instalment',
+    id: 'pay_completed_2',
+    date: '2025-03-15',
+    transactionId: 'TXN987654321',
+    description: 'Monthly Payment - March 2025',
     amount: 250.00,
     last4: '4242'
   }
 ]);
 
-// Start editing mode for personal details
+// Start editing profile
 const startEditing = () => {
   isEditing.value = true;
 };
 
-// Cancel editing and revert changes for personal details
+// Cancel editing profile
 const cancelEditing = () => {
-  // Reset form to original values
+  // Reset to original values
   Object.assign(profile, originalProfile);
+  const parsed = parsePhoneNumber(originalProfile.phone);
+  profile.countryCode = parsed.countryCode;
+  profile.phoneNumber = parsed.phoneNumber;
   isEditing.value = false;
 };
 
 // Save profile changes
 const saveProfile = () => {
-  // Combine country code and phone number into single phone field
-  originalProfile.phone = `${profile.countryCode} ${profile.phoneNumber}`;
-  
-  // Copy other properties
+  // In a real app, you would send these changes to an API
+  // For this demo, we'll just update the original profile
   originalProfile.firstName = profile.firstName;
   originalProfile.lastName = profile.lastName;
-  originalProfile.email = profile.email;
   originalProfile.address = profile.address;
-  
+  originalProfile.phone = `${profile.countryCode} ${profile.phoneNumber}`;
   isEditing.value = false;
-  
-  // Show success message (would be toast notification in real app)
+  // Show success notification
   alert('Profile updated successfully!');
 };
 
@@ -718,7 +886,88 @@ const savePaymentDetails = () => {
   alert('Payment details updated successfully!');
 };
 
-// Show delete account confirmation modal
+// Set a payment method as default
+const setAsDefault = (id) => {
+  paymentMethods.value.forEach(method => {
+    method.isDefault = method.id === id;
+  });
+  // In a real app, you would send this change to an API
+  alert('Default payment method updated!');
+};
+
+// Remove a payment method
+const removePaymentMethod = (id) => {
+  if (confirm('Are you sure you want to remove this payment method?')) {
+    const index = paymentMethods.value.findIndex(method => method.id === id);
+    if (index !== -1) {
+      paymentMethods.value.splice(index, 1);
+      // In a real app, you would send this deletion to an API
+      alert('Payment method removed successfully!');
+    }
+  }
+};
+
+// Open edit billing address modal
+const editBillingAddress = (id) => {
+  selectedPaymentMethodId.value = id;
+  const method = paymentMethods.value.find(m => m.id === id);
+  
+  if (method && method.billingAddress) {
+    // Populate the form with existing billing address data
+    billingAddress.street = method.billingAddress.street || '';
+    billingAddress.city = method.billingAddress.city || '';
+    billingAddress.state = method.billingAddress.state || '';
+    billingAddress.postalCode = method.billingAddress.postalCode || '';
+    billingAddress.country = method.billingAddress.country || 'United States';
+  } else {
+    // Reset form if no billing address exists
+    billingAddress.street = '';
+    billingAddress.city = '';
+    billingAddress.state = '';
+    billingAddress.postalCode = '';
+    billingAddress.country = 'United States';
+  }
+  
+  showBillingAddressModal.value = true;
+};
+
+// Close billing address modal
+const closeBillingAddressModal = () => {
+  showBillingAddressModal.value = false;
+  selectedPaymentMethodId.value = null;
+};
+
+// Save billing address
+const saveBillingAddress = () => {
+  if (selectedPaymentMethodId.value) {
+    const methodIndex = paymentMethods.value.findIndex(m => m.id === selectedPaymentMethodId.value);
+    
+    if (methodIndex !== -1) {
+      // Update the billing address for the selected payment method
+      paymentMethods.value[methodIndex].billingAddress = {
+        street: billingAddress.street,
+        city: billingAddress.city,
+        state: billingAddress.state,
+        postalCode: billingAddress.postalCode,
+        country: billingAddress.country
+      };
+      
+      // In a real app, you would send this update to an API
+      alert('Billing address updated successfully!');
+    }
+  }
+  
+  // Close the modal
+  closeBillingAddressModal();
+};
+
+// View receipt
+const viewReceipt = (payment) => {
+  selectedPayment.value = payment;
+  showReceiptModal.value = true;
+};
+
+// Confirm delete account
 const confirmDeleteAccount = () => {
   showDeleteModal.value = true;
   confirmDelete.value = false;
@@ -727,21 +976,16 @@ const confirmDeleteAccount = () => {
 // Delete account
 const deleteAccount = () => {
   if (confirmDelete.value) {
-    // In a real app, this would call an API to delete the account
-    alert('Account has been deleted. You will be redirected to the homepage.');
-    router.push('/');
+    // In a real app, you would send this deletion request to an API
+    alert('Account deleted successfully!');
+    // Redirect to home/login page
+    router.push('/auth/login');
   }
 };
 
-// View receipt for a transaction
-const viewReceipt = (payment) => {
-  selectedPayment.value = payment;
-  showReceiptModal.value = true;
-};
-
-// Log out user
+// Logout
 const logout = () => {
-  // In a real app, this would clear auth tokens, etc.
+  // In a real app, you would clear session/tokens
   router.push('/auth/login');
 };
 </script>
