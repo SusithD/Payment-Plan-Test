@@ -1,8 +1,8 @@
 <template>
-  <div class="fade-in bg-gray-50">
+  <div class="fade-in bg-gray-50 min-h-screen">
     <!-- Top Stats Bar -->
     <div class="bg-white shadow-sm">
-      <div class="container-custom py-4">
+      <div class="container-custom py-6">
         <div class="flex flex-wrap items-center justify-between">
           <div>
             <h1 class="text-xl font-bold text-gray-900">Payment History</h1>
@@ -13,13 +13,13 @@
             </div>
           </div>
           <div class="flex space-x-3">
-            <button @click="downloadHistory" class="btn-outline flex items-center py-1.5 px-3 text-sm">
+            <button @click="downloadHistory" class="btn-outline flex items-center py-2 px-4 text-sm">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               Download Statement
             </button>
-            <NuxtLink to="/payments" class="btn-primary flex items-center py-1.5 px-3 text-sm">
+            <NuxtLink to="/payments" class="btn-primary flex items-center py-2 px-4 text-sm">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
@@ -30,11 +30,11 @@
       </div>
     </div>
     
-    <div class="container-custom py-8">
+    <div class="container-custom py-12">
       <!-- Main Grid Layout -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <!-- Left Column - Summary Cards -->
-        <div class="lg:col-span-1 space-y-6">
+        <div class="lg:col-span-1 space-y-10">
           <!-- Summary Card 1 -->
           <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
             <div class="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
@@ -220,7 +220,7 @@
         </div>
         
         <!-- Right Column - Transaction History -->
-        <div class="lg:col-span-2 space-y-6">
+        <div class="lg:col-span-2 space-y-10">
           <!-- Transaction History Card -->
           <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
             <div class="px-6 py-5 border-b border-gray-100">
@@ -370,18 +370,18 @@
             </div>
             
             <!-- Pagination -->
-            <div v-if="filteredTransactions.length > 0" class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+            <div v-if="filteredTransactions.length > 0" class="px-6 py-5 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
               <div class="text-sm text-gray-700">
                 Showing <span class="font-medium">1</span> to <span class="font-medium">{{ filteredTransactions.length }}</span> of <span class="font-medium">{{ transactions.length }}</span> results
               </div>
-              <div class="flex space-x-2">
-                <button class="btn-outline py-1 px-2 text-sm opacity-50 cursor-not-allowed">
+              <div class="flex space-x-3">
+                <button class="btn-outline py-2 px-4 text-sm opacity-50 cursor-not-allowed">
                   Previous
                 </button>
-                <button class="btn-outline py-1 px-2 text-sm bg-primary-50 text-primary-700 border-primary-300">
+                <button class="btn-outline py-2 px-4 text-sm bg-primary-50 text-primary-700 border-primary-300">
                   1
                 </button>
-                <button class="btn-outline py-1 px-2 text-sm opacity-50 cursor-not-allowed">
+                <button class="btn-outline py-2 px-4 text-sm opacity-50 cursor-not-allowed">
                   Next
                 </button>
               </div>
@@ -396,8 +396,8 @@
       v-if="showReceiptModal" 
       class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 fade-in"
     >
-      <div class="bg-white rounded-xl p-6 shadow-xl w-full max-w-lg mx-4">
-        <div class="flex justify-between items-center mb-4">
+      <div class="bg-white rounded-xl p-8 shadow-xl w-full max-w-lg mx-4">
+        <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-bold">Payment Receipt</h3>
           <button @click="showReceiptModal = false" class="text-gray-400 hover:text-gray-500">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -455,7 +455,7 @@
           </div>
         </div>
         
-        <div class="mt-6 flex justify-end space-x-3">
+        <div class="mt-6 flex justify-end space-x-4">
           <button @click="printReceipt" class="btn-outline flex items-center space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -480,8 +480,8 @@
       v-if="showRetryModal" 
       class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 fade-in"
     >
-      <div class="bg-white rounded-xl p-6 shadow-xl w-full max-w-lg mx-4">
-        <div class="flex justify-between items-center mb-4">
+      <div class="bg-white rounded-xl p-8 shadow-xl w-full max-w-lg mx-4">
+        <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-bold">Retry Failed Payment</h3>
           <button @click="showRetryModal = false" class="text-gray-400 hover:text-gray-500">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -495,8 +495,8 @@
             You are about to retry the following failed payment:
           </p>
           
-          <div class="bg-gray-50 p-4 rounded-lg mb-4">
-            <div class="grid grid-cols-2 gap-2 text-sm">
+          <div class="bg-gray-50 p-5 rounded-lg mb-5">
+            <div class="grid grid-cols-2 gap-3 text-sm">
               <div class="text-gray-600">Transaction ID:</div>
               <div class="font-medium">{{ retryTransaction.transactionId }}</div>
               
@@ -511,7 +511,7 @@
             </div>
           </div>
           
-          <div class="mb-4">
+          <div class="mb-5">
             <label class="form-label">Select Payment Method</label>
             <select v-model="retryPaymentMethod" class="form-input w-full">
               <option value="credit">Credit Card (ending in 1234)</option>
@@ -532,7 +532,7 @@
           </div>
         </div>
         
-        <div class="flex justify-end space-x-3">
+        <div class="flex justify-end space-x-4">
           <button @click="showRetryModal = false" class="btn-outline">
             Cancel
           </button>
@@ -829,19 +829,19 @@ onMounted(() => {
 }
 
 .btn-primary {
-  @apply bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-sm;
+  @apply bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-sm py-2 px-4;
 }
 
 .btn-outline {
-  @apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium rounded-lg shadow-sm;
+  @apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium rounded-lg shadow-sm py-2 px-4;
 }
 
 .form-input {
-  @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm;
+  @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm py-2 px-3;
 }
 
 .form-label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
+  @apply block text-sm font-medium text-gray-700 mb-2;
 }
 
 .fade-in {
