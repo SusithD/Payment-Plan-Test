@@ -9,145 +9,119 @@
       </div>
       
       <div class="max-w-md mx-auto w-full py-20 lg:py-12">
-        <div class="mb-10">
+        <div class="mb-10 text-center">
           <h2 class="text-3xl font-bold text-gray-900 mb-3">Welcome back</h2>
-          <p class="text-gray-600">
-            We're happy to see you again. Access your account below.
+          <p class="text-gray-600 text-lg">
+            Sign in with your preferred account to access your payment dashboard
           </p>
         </div>
-        
-        <form @submit.prevent="handleLogin" class="space-y-6">
-          <div class="space-y-5">
-            <div class="form-group">
-              <label for="email" class="form-label inline-block mb-2 font-medium text-gray-700">Email address</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                </span>
-                <input 
-                  id="email" 
-                  v-model="email" 
-                  type="email" 
-                  autocomplete="email" 
-                  required 
-                  class="auth-input pl-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
-                  placeholder="your.email@example.com"
-                  :class="{'border-red-300 focus:ring-red-500': emailError}"
-                />
-              </div>
-              <p v-if="emailError" class="mt-1 text-sm text-red-500">{{ emailError }}</p>
-            </div>
-            
-            <div class="form-group">
-              <div class="flex items-center justify-between mb-2">
-                <label for="password" class="form-label font-medium text-gray-700">Password</label>
-                <NuxtLink 
-                  to="/auth/forgot-password" 
-                  class="text-sm font-medium text-primary-600 hover:text-primary-500 transition-colors"
-                >
-                  Forgot password?
-                </NuxtLink>
-              </div>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-                <input 
-                  id="password" 
-                  v-model="password" 
-                  :type="showPassword ? 'text' : 'password'" 
-                  autocomplete="current-password" 
-                  required 
-                  class="auth-input pl-10 pr-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
-                  placeholder="••••••••"
-                  :class="{'border-red-300 focus:ring-red-500': passwordError}"
-                />
-                <button 
-                  type="button" 
-                  class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
-                  @click="togglePassword"
-                >
-                  <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                  </svg>
-                  <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd" />
-                    <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
-                  </svg>
-                </button>
-              </div>
-              <p v-if="passwordError" class="mt-1 text-sm text-red-500">{{ passwordError }}</p>
-            </div>
-          </div>
 
-          <div class="flex items-center">
-            <input 
-              id="remember-me" 
-              v-model="rememberMe"
-              type="checkbox" 
-              class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" 
-            />
-            <label for="remember-me" class="ml-2 block text-sm text-gray-700">
-              Keep me signed in
-            </label>
-          </div>
-
+        <!-- Social Login Options -->
+        <div class="space-y-4">
+          <!-- Google Login -->
           <button 
-            type="submit" 
-            class="w-full btn-gradient py-4 rounded-xl text-lg font-medium relative overflow-hidden group transform transition hover:scale-[1.02] active:scale-[0.98]"
+            @click="handleGoogleLogin" 
+            class="w-full flex items-center justify-center px-6 py-4 border-2 border-gray-200 rounded-xl text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md"
             :disabled="isLoading"
           >
-            <div class="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
-            <span class="relative flex items-center justify-center">
-              <span v-if="isLoading" class="mr-2">
-                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              </span>
-              <span>{{ isLoading ? 'Signing in...' : 'Sign in to account' }}</span>
-            </span>
+            <div class="flex items-center">
+              <svg class="w-6 h-6 mr-4" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              <div class="text-left">
+                <div class="font-semibold text-base">Continue with Google</div>
+                <div class="text-sm text-gray-500">Use your Google account to sign in securely</div>
+              </div>
+            </div>
+            <svg v-if="isLoading && loadingProvider === 'google'" class="animate-spin ml-3 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
           </button>
 
-          <div class="text-center">
-            <p class="text-sm text-gray-600">
-              Don't have an account?
-              <NuxtLink 
-                to="/auth/signup" 
-                class="font-medium text-primary-600 hover:text-primary-500 transition-colors"
-              >
-                Create one now
-              </NuxtLink>
-            </p>
-          </div>
-        </form>
-
-        <div class="mt-10">
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-200"></div>
+          <!-- Apple Login -->
+          <button 
+            @click="handleAppleLogin" 
+            class="w-full flex items-center justify-center px-6 py-4 border-2 border-gray-900 bg-gray-900 rounded-xl text-white hover:bg-gray-800 hover:border-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-500/20 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md"
+            :disabled="isLoading"
+          >
+            <div class="flex items-center">
+              <svg class="w-6 h-6 mr-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
+              </svg>
+              <div class="text-left">
+                <div class="font-semibold text-base">Continue with Apple</div>
+                <div class="text-sm text-gray-300">Sign in using your Apple ID with Touch ID or Face ID</div>
+              </div>
             </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-4 bg-white text-gray-500">Or continue with</span>
+            <svg v-if="isLoading && loadingProvider === 'apple'" class="animate-spin ml-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+          <h3 class="font-semibold text-gray-900 mb-3 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            Why use social login?
+          </h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Enhanced security with two-factor authentication
+            </li>
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Quick and seamless access to your account
+            </li>
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              No need to remember another password
+            </li>
+          </ul>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div class="flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <div>
+              <h4 class="text-sm font-medium text-gray-900 mb-1">Your data is protected</h4>
+              <p class="text-xs text-gray-600">We use industry-standard encryption and never store your login credentials. Your financial information is secured with bank-level security.</p>
             </div>
           </div>
+        </div>
 
-          <div class="mt-6 grid grid-cols-2 gap-3">
-            <button class="social-btn">
-              <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5" />
-              <span>Google</span>
-            </button>
-            <button class="social-btn">
-              <img src="https://www.apple.com/favicon.ico" alt="Apple" class="w-5 h-5" />
-              <span>Apple</span>
-            </button>
-          </div>
+        <div class="text-center mt-8">
+          <p class="text-sm text-gray-600">
+            Don't have an account?
+            <NuxtLink 
+              to="/auth/signup" 
+              class="font-medium text-primary-600 hover:text-primary-500 transition-colors"
+            >
+              Create one now
+            </NuxtLink>
+          </p>
+          <p class="text-xs text-gray-500 mt-4">
+            By signing in, you agree to our 
+            <a href="#" class="text-primary-600 hover:text-primary-500">Terms of Service</a> and 
+            <a href="#" class="text-primary-600 hover:text-primary-500">Privacy Policy</a>
+          </p>
         </div>
       </div>
       
@@ -276,84 +250,55 @@ definePageMeta({
 });
 
 const router = useRouter();
-const email = ref('');
-const password = ref('');
-const rememberMe = ref(false);
-const showPassword = ref(false);
 const isLoading = ref(false);
-const emailError = ref('');
-const passwordError = ref('');
+const loadingProvider = ref('');
 
-const togglePassword = () => {
-  showPassword.value = !showPassword.value;
-};
-
-const validateForm = () => {
-  let isValid = true;
-  
-  // Reset errors
-  emailError.value = '';
-  passwordError.value = '';
-  
-  // Email validation
-  if (!email.value) {
-    emailError.value = 'Email is required';
-    isValid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    emailError.value = 'Please enter a valid email address';
-    isValid = false;
-  }
-  
-  // Password validation
-  if (!password.value) {
-    passwordError.value = 'Password is required';
-    isValid = false;
-  } else if (password.value.length < 6) {
-    passwordError.value = 'Password must be at least 6 characters';
-    isValid = false;
-  }
-  
-  return isValid;
-};
-
-const handleLogin = async () => {
-  if (!validateForm()) return;
-  
+const handleGoogleLogin = async () => {
   try {
     isLoading.value = true;
+    loadingProvider.value = 'google';
     
-    // Simulate API call with timeout
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Simulate OAuth flow
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // Login successful
-    router.push('/dashboard');
+    // In a real app, you would integrate with Google OAuth
+    // Example: window.location.href = 'https://accounts.google.com/oauth/authorize?...'
+    
+    // Redirect to phone verification instead of dashboard
+    router.push('/auth/phone-verification');
   } catch (error) {
-    console.error('Login failed:', error);
+    console.error('Google login failed:', error);
+    // Handle error (show toast notification, etc.)
   } finally {
     isLoading.value = false;
+    loadingProvider.value = '';
+  }
+};
+
+const handleAppleLogin = async () => {
+  try {
+    isLoading.value = true;
+    loadingProvider.value = 'apple';
+    
+    // Simulate OAuth flow
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // In a real app, you would integrate with Apple Sign In
+    // Example: Use Apple's Sign In JS SDK
+    
+    // Redirect to phone verification instead of dashboard
+    router.push('/auth/phone-verification');
+  } catch (error) {
+    console.error('Apple login failed:', error);
+    // Handle error (show toast notification, etc.)
+  } finally {
+    isLoading.value = false;
+    loadingProvider.value = '';
   }
 };
 </script>
 
 <style scoped>
-.auth-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-}
-
-.btn-gradient {
-  background-image: linear-gradient(to right, var(--tw-gradient-stops));
-  --tw-gradient-from: #2C4880;
-  --tw-gradient-to: #4476b0;
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  color: white;
-}
-
 .gradient-text {
   background-clip: text;
   -webkit-background-clip: text;
@@ -362,43 +307,6 @@ const handleLogin = async () => {
   --tw-gradient-from: #2C4880;
   --tw-gradient-to: #4476b0;
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.social-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  color: #4b5563;
-  background-color: white;
-  font-weight: 500;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.social-btn:hover {
-  background-color: #f9fafb;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
-
-.social-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(44, 72, 128, 0.2);
-}
-
-.social-btn span {
-  margin-left: 0.75rem;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
 }
 
 /* Animation for page elements */
@@ -413,22 +321,16 @@ const handleLogin = async () => {
   }
 }
 
-.form-group {
+.space-y-4 > * {
   animation: fadeIn 0.5s ease-out forwards;
   opacity: 0;
 }
 
-.form-group:nth-child(1) {
+.space-y-4 > *:nth-child(1) {
   animation-delay: 0.1s;
 }
 
-.form-group:nth-child(2) {
+.space-y-4 > *:nth-child(2) {
   animation-delay: 0.2s;
-}
-
-button[type="submit"] {
-  animation: fadeIn 0.5s ease-out forwards;
-  animation-delay: 0.3s;
-  opacity: 0;
 }
 </style>

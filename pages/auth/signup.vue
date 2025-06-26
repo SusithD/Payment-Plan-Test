@@ -19,158 +19,190 @@
         <!-- Step indicator -->
         <div class="flex items-center mb-10">
           <div class="flex flex-col items-center">
-            <div :class="['rounded-full h-10 w-10 flex items-center justify-center text-white', currentStep === 1 ? 'bg-primary-600' : 'bg-primary-600']">
+            <div :class="['rounded-full h-10 w-10 flex items-center justify-center text-white', currentStep >= 1 ? 'bg-primary-600' : 'bg-gray-200 text-gray-500']">
               1
             </div>
             <span class="text-sm mt-2 text-gray-600">Personal Info</span>
           </div>
           <div class="flex-1 h-1 mx-4 bg-gray-200">
-            <div :class="['h-full bg-primary-600', currentStep === 2 ? 'w-full' : 'w-0']" :style="{ transition: 'width 0.3s ease' }"></div>
+            <div :class="['h-full bg-primary-600 transition-all duration-300', currentStep >= 2 ? 'w-full' : 'w-0']"></div>
           </div>
           <div class="flex flex-col items-center">
-            <div :class="['rounded-full h-10 w-10 flex items-center justify-center', currentStep === 2 ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-500']">
+            <div :class="['rounded-full h-10 w-10 flex items-center justify-center', currentStep >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-500']">
               2
+            </div>
+            <span class="text-sm mt-2 text-gray-600">OTP Verify</span>
+          </div>
+          <div class="flex-1 h-1 mx-4 bg-gray-200">
+            <div :class="['h-full bg-primary-600 transition-all duration-300', currentStep === 3 ? 'w-full' : 'w-0']"></div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div :class="['rounded-full h-10 w-10 flex items-center justify-center', currentStep === 3 ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-500']">
+              3
             </div>
             <span class="text-sm mt-2 text-gray-600">Account Setup</span>
           </div>
         </div>
         
-        <form @submit.prevent="currentStep === 1 ? goToNextStep() : handleSignup()" class="space-y-6">
+        <form @submit.prevent="handleFormSubmit" class="space-y-6">
           <!-- Step 1: Personal Information -->
           <div v-if="currentStep === 1" class="space-y-5">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div class="form-group">
                 <label for="first-name" class="form-label inline-block mb-2 font-medium text-gray-700">First name</label>
                 <div class="relative">
-                  <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="input-icon h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                  </svg>
                   <input 
                     id="first-name" 
                     v-model="firstName" 
                     type="text" 
                     autocomplete="given-name" 
                     required 
-                    class="auth-input pl-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
+                    class="auth-input input-with-icon focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
                     placeholder="Enter your first name"
-                    :class="{'border-red-300 focus:ring-red-500': firstNameError}"
+                    :class="{'border-red-300 focus:ring-red-500 error': firstNameError}"
                   />
                 </div>
-                <p v-if="firstNameError" class="mt-1 text-sm text-red-500">{{ firstNameError }}</p>
+                <p v-if="firstNameError" class="form-error">{{ firstNameError }}</p>
               </div>
               
               <div class="form-group">
                 <label for="last-name" class="form-label inline-block mb-2 font-medium text-gray-700">Last name</label>
                 <div class="relative">
-                  <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="input-icon h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                  </svg>
                   <input 
                     id="last-name" 
                     v-model="lastName" 
                     type="text" 
                     autocomplete="family-name" 
                     required 
-                    class="auth-input pl-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
+                    class="auth-input input-with-icon focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
                     placeholder="Enter your last name"
-                    :class="{'border-red-300 focus:ring-red-500': lastNameError}"
+                    :class="{'border-red-300 focus:ring-red-500 error': lastNameError}"
                   />
                 </div>
-                <p v-if="lastNameError" class="mt-1 text-sm text-red-500">{{ lastNameError }}</p>
+                <p v-if="lastNameError" class="form-error">{{ lastNameError }}</p>
               </div>
-            </div>
-            
-            <div class="form-group">
-              <label for="email" class="form-label inline-block mb-2 font-medium text-gray-700">Email address</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                </span>
-                <input 
-                  id="email" 
-                  v-model="email" 
-                  type="email" 
-                  autocomplete="email" 
-                  required 
-                  class="auth-input pl-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
-                  placeholder="your.email@example.com"
-                  :class="{'border-red-300 focus:ring-red-500': emailError}"
-                />
-              </div>
-              <p v-if="emailError" class="mt-1 text-sm text-red-500">{{ emailError }}</p>
             </div>
 
             <div class="form-group">
               <label for="mobile" class="form-label inline-block mb-2 font-medium text-gray-700">Mobile number</label>
-              <div class="flex">
+              <div class="mobile-input-container">
                 <div class="relative">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="input-icon h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
                   <select 
                     v-model="countryCode" 
-                    class="auth-input w-28 pl-8 pr-6 focus:ring-2 focus:ring-primary-500 transition-all duration-200 rounded-r-none border-r-0"
+                    class="auth-input country-select focus:ring-2 focus:ring-primary-500 transition-all duration-200"
                   >
                     <option v-for="country in countries" :key="country.code" :value="country.code">
-                      {{ country.code }}
+                      {{ country.code }} {{ country.flag }}
                     </option>
                   </select>
-                  <span class="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                  </span>
-                  <span class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                    <svg class="h-4 w-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                  </span>
                 </div>
-                <div class="relative flex-1">
-                  <input 
-                    id="mobile" 
-                    v-model="mobile" 
-                    type="tel" 
-                    autocomplete="tel" 
-                    required 
-                    class="auth-input w-full pl-3 focus:ring-2 focus:ring-primary-500 transition-all duration-200 rounded-l-none" 
-                    placeholder="Enter your mobile number"
-                    :class="{'border-red-300 focus:ring-red-500': mobileError}"
-                  />
-                </div>
+                <input 
+                  id="mobile" 
+                  v-model="mobile" 
+                  type="tel" 
+                  autocomplete="tel" 
+                  required 
+                  class="auth-input mobile-input focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
+                  placeholder="Enter your mobile number"
+                  :class="{'border-red-300 focus:ring-red-500 error': mobileError}"
+                />
               </div>
-              <p class="mt-2 text-xs text-gray-500">We'll send verification code to this number</p>
-              <p v-if="mobileError" class="mt-1 text-sm text-red-500">{{ mobileError }}</p>
+              <p class="mt-2 text-xs text-gray-500">We'll send a verification code to this number</p>
+              <p v-if="mobileError" class="form-error">{{ mobileError }}</p>
             </div>
           </div>
 
-          <!-- Step 2: Account Setup -->
+          <!-- Step 2: OTP Verification -->
           <div v-if="currentStep === 2" class="space-y-5">
+            <div class="text-center mb-6">
+              <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-primary-100 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 012 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">Verify your phone number</h3>
+              <p class="text-sm text-gray-600 mb-4">
+                We've sent a 6-digit verification code to<br>
+                <span class="font-medium text-gray-900">{{ countryCode }} {{ mobile }}</span>
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label inline-block mb-2 font-medium text-gray-700">Enter verification code</label>
+              <div class="flex justify-center space-x-3 mb-4">
+                <input 
+                  v-for="(digit, index) in otpDigits" 
+                  :key="index"
+                  v-model="otpDigits[index]"
+                  @input="handleOtpInput(index, $event)"
+                  @keydown="handleOtpKeydown(index, $event)"
+                  :ref="el => otpInputs[index] = el"
+                  type="text" 
+                  maxlength="1"
+                  class="otp-input text-center text-lg font-semibold border-2 border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all duration-200"
+                  :class="{'border-red-300 focus:border-red-500 focus:ring-red-500': otpError}"
+                />
+              </div>
+              <p v-if="otpError" class="text-sm text-red-500 text-center mb-4">{{ otpError }}</p>
+              
+              <div class="text-center">
+                <p class="text-sm text-gray-600 mb-4">
+                  Didn't receive the code?
+                </p>
+                <button 
+                  type="button" 
+                  @click="resendOtp"
+                  :disabled="resendTimer > 0 || isResending"
+                  class="text-primary-600 text-sm font-medium hover:text-primary-700 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+                >
+                  <span v-if="isResending" class="flex items-center justify-center">
+                    <svg class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Resending...
+                  </span>
+                  <span v-else-if="resendTimer > 0">
+                    Resend OTP in {{ resendTimer }}s
+                  </span>
+                  <span v-else>
+                    Resend OTP
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Account Setup -->
+          <div v-if="currentStep === 3" class="space-y-5">
             <div class="form-group">
               <label for="password" class="form-label inline-block mb-2 font-medium text-gray-700">Password</label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                  </svg>
-                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="input-icon h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
                 <input 
                   id="password" 
                   v-model="password" 
                   :type="showPassword ? 'text' : 'password'" 
                   autocomplete="new-password" 
                   required 
-                  class="auth-input pl-10 pr-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
+                  class="auth-input input-with-both-icons focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
                   placeholder="••••••••"
-                  :class="{'border-red-300 focus:ring-red-500': passwordError}"
+                  :class="{'border-red-300 focus:ring-red-500 error': passwordError}"
                 />
                 <button 
                   type="button" 
-                  class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+                  class="password-toggle"
                   @click="togglePassword"
                 >
                   <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -185,29 +217,28 @@
               <p class="mt-2 text-sm text-gray-500">
                 Password must be at least 8 characters with numbers and special characters
               </p>
-              <p v-if="passwordError" class="mt-1 text-sm text-red-500">{{ passwordError }}</p>
+              <p v-if="passwordError" class="form-error">{{ passwordError }}</p>
             </div>
             
             <div class="form-group">
               <label for="confirm-password" class="form-label inline-block mb-2 font-medium text-gray-700">Confirm password</label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"/>
-                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="input-icon h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
                 <input 
                   id="confirm-password" 
                   v-model="confirmPassword" 
                   :type="showConfirmPassword ? 'text' : 'password'" 
                   autocomplete="new-password" 
                   required 
-                  class="auth-input pl-10 pr-10 focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
+                  class="auth-input input-with-both-icons focus:ring-2 focus:ring-primary-500 transition-all duration-200" 
                   placeholder="••••••••"
-                  :class="{'border-red-300 focus:ring-red-500': confirmPasswordError}"
+                  :class="{'border-red-300 focus:ring-red-500 error': confirmPasswordError}"
                 />
                 <button 
                   type="button" 
-                  class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+                  class="password-toggle"
                   @click="toggleConfirmPassword"
                 >
                   <svg v-if="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -219,7 +250,7 @@
                   </svg>
                 </button>
               </div>
-              <p v-if="confirmPasswordError" class="mt-1 text-sm text-red-500">{{ confirmPasswordError }}</p>
+              <p v-if="confirmPasswordError" class="form-error">{{ confirmPasswordError }}</p>
             </div>
 
             <div class="flex items-start">
@@ -242,7 +273,7 @@
           <!-- Navigation buttons -->
           <div class="flex justify-between">
             <button 
-              v-if="currentStep === 2"
+              v-if="currentStep > 1"
               type="button" 
               class="px-8 py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
               @click="goToPreviousStep"
@@ -272,11 +303,13 @@
                 <span>
                   {{ 
                     currentStep === 1 
-                      ? 'Continue' 
-                      : (isLoading ? 'Creating account...' : 'Create account')
+                      ? 'Send OTP' 
+                      : currentStep === 2 
+                        ? 'Verify OTP'
+                        : (isLoading ? 'Creating account...' : 'Create account')
                   }}
                 </span>
-                <svg v-if="currentStep === 1" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <svg v-if="currentStep < 3" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
               </span>
@@ -422,7 +455,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 definePageMeta({
@@ -433,7 +466,6 @@ const router = useRouter();
 const currentStep = ref(1);
 const firstName = ref('');
 const lastName = ref('');
-const email = ref('');
 const mobile = ref('');
 const password = ref('');
 const confirmPassword = ref('');
@@ -441,59 +473,30 @@ const acceptTerms = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const isLoading = ref(false);
+const isResending = ref(false);
 const firstNameError = ref('');
 const lastNameError = ref('');
-const emailError = ref('');
 const mobileError = ref('');
 const passwordError = ref('');
 const confirmPasswordError = ref('');
-const countryCode = ref('+1'); // Default country code
+const otpError = ref('');
+const countryCode = ref('+1');
+const otpDigits = ref(['', '', '', '', '', '']);
+const otpInputs = ref([]);
+const resendTimer = ref(0);
+let resendInterval = null;
+
 const countries = ref([
-  { code: '+1', name: 'United States/Canada' },
-  { code: '+44', name: 'United Kingdom' },
-  { code: '+91', name: 'India' },
-  { code: '+61', name: 'Australia' },
-  { code: '+64', name: 'New Zealand' },
-  { code: '+49', name: 'Germany' },
-  { code: '+33', name: 'France' },
-  { code: '+81', name: 'Japan' },
-  { code: '+86', name: 'China' },
-  { code: '+65', name: 'Singapore' },
-  { code: '+971', name: 'United Arab Emirates' },
-  { code: '+966', name: 'Saudi Arabia' },
-  { code: '+27', name: 'South Africa' },
-  { code: '+234', name: 'Nigeria' },
-  { code: '+55', name: 'Brazil' },
-  { code: '+52', name: 'Mexico' },
-  { code: '+31', name: 'Netherlands' },
-  { code: '+46', name: 'Sweden' },
-  { code: '+47', name: 'Norway' },
-  { code: '+45', name: 'Denmark' },
-  { code: '+358', name: 'Finland' },
-  { code: '+39', name: 'Italy' },
-  { code: '+34', name: 'Spain' },
-  { code: '+351', name: 'Portugal' },
-  { code: '+41', name: 'Switzerland' },
-  { code: '+43', name: 'Austria' },
-  { code: '+32', name: 'Belgium' },
-  { code: '+353', name: 'Ireland' },
-  { code: '+48', name: 'Poland' },
-  { code: '+420', name: 'Czech Republic' },
-  { code: '+36', name: 'Hungary' },
-  { code: '+30', name: 'Greece' },
-  { code: '+7', name: 'Russia' },
-  { code: '+82', name: 'South Korea' },
-  { code: '+66', name: 'Thailand' },
-  { code: '+60', name: 'Malaysia' },
-  { code: '+62', name: 'Indonesia' },
-  { code: '+63', name: 'Philippines' },
-  { code: '+84', name: 'Vietnam' },
-  { code: '+880', name: 'Bangladesh' },
-  { code: '+92', name: 'Pakistan' },
-  { code: '+94', name: 'Sri Lanka' },
-  { code: '+977', name: 'Nepal' },
-  { code: '+20', name: 'Egypt' },
-  { code: '+972', name: 'Israel' }
+  { code: '+1', name: 'United States/Canada', flag: '🇺🇸' },
+  { code: '+44', name: 'United Kingdom', flag: '🇬🇧' },
+  { code: '+91', name: 'India', flag: '🇮🇳' },
+  { code: '+61', name: 'Australia', flag: '🇦🇺' },
+  { code: '+64', name: 'New Zealand', flag: '🇳🇿' },
+  { code: '+49', name: 'Germany', flag: '🇩🇪' },
+  { code: '+33', name: 'France', flag: '🇫🇷' },
+  { code: '+81', name: 'Japan', flag: '🇯🇵' },
+  { code: '+86', name: 'China', flag: '🇨🇳' },
+  { code: '+65', name: 'Singapore', flag: '🇸🇬' },
 ]);
 
 const togglePassword = () => {
@@ -504,39 +507,81 @@ const toggleConfirmPassword = () => {
   showConfirmPassword.value = !showConfirmPassword.value;
 };
 
+const handleOtpInput = (index, event) => {
+  const value = event.target.value;
+  if (!/^\d*$/.test(value)) {
+    event.target.value = otpDigits.value[index];
+    return;
+  }
+  
+  otpDigits.value[index] = value;
+  
+  if (value && index < 5) {
+    otpInputs.value[index + 1]?.focus();
+  }
+  
+  otpError.value = '';
+};
+
+const handleOtpKeydown = (index, event) => {
+  if (event.key === 'Backspace' && !otpDigits.value[index] && index > 0) {
+    otpInputs.value[index - 1]?.focus();
+  }
+};
+
+const startResendTimer = () => {
+  resendTimer.value = 60;
+  resendInterval = setInterval(() => {
+    resendTimer.value--;
+    if (resendTimer.value <= 0) {
+      clearInterval(resendInterval);
+    }
+  }, 1000);
+};
+
+const resendOtp = async () => {
+  try {
+    isResending.value = true;
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Clear OTP inputs
+    otpDigits.value = ['', '', '', '', '', ''];
+    otpInputs.value[0]?.focus();
+    
+    // Start timer
+    startResendTimer();
+    
+  } catch (error) {
+    console.error('Failed to resend OTP:', error);
+  } finally {
+    isResending.value = false;
+  }
+};
+
 const validateStep1 = () => {
   let isValid = true;
   
-  // Reset errors
   firstNameError.value = '';
   lastNameError.value = '';
-  emailError.value = '';
   mobileError.value = '';
   
-  // First name validation
   if (!firstName.value.trim()) {
     firstNameError.value = 'First name is required';
     isValid = false;
   }
   
-  // Last name validation
   if (!lastName.value.trim()) {
     lastNameError.value = 'Last name is required';
     isValid = false;
   }
   
-  // Email validation
-  if (!email.value) {
-    emailError.value = 'Email is required';
-    isValid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    emailError.value = 'Please enter a valid email address';
-    isValid = false;
-  }
-  
-  // Mobile validation
   if (!mobile.value) {
     mobileError.value = 'Mobile number is required';
+    isValid = false;
+  } else if (!/^\d{10,15}$/.test(mobile.value.replace(/\s+/g, ''))) {
+    mobileError.value = 'Please enter a valid mobile number';
     isValid = false;
   }
   
@@ -544,13 +589,29 @@ const validateStep1 = () => {
 };
 
 const validateStep2 = () => {
+  const otp = otpDigits.value.join('');
+  if (otp.length !== 6) {
+    otpError.value = 'Please enter the complete 6-digit code';
+    return false;
+  }
+  
+  // For demo purposes, accept any 6-digit code
+  // In real app, verify with backend
+  if (otp !== '123456' && otp !== '000000') {
+    // Auto-accept for demo, but you can uncomment below for testing
+    // otpError.value = 'Invalid verification code. Please try again.';
+    // return false;
+  }
+  
+  return true;
+};
+
+const validateStep3 = () => {
   let isValid = true;
   
-  // Reset errors
   passwordError.value = '';
   confirmPasswordError.value = '';
   
-  // Password validation
   if (!password.value) {
     passwordError.value = 'Password is required';
     isValid = false;
@@ -562,7 +623,6 @@ const validateStep2 = () => {
     isValid = false;
   }
   
-  // Confirm password validation
   if (password.value !== confirmPassword.value) {
     confirmPasswordError.value = 'Passwords do not match';
     isValid = false;
@@ -571,48 +631,144 @@ const validateStep2 = () => {
   return isValid;
 };
 
-const goToNextStep = () => {
-  if (validateStep1()) {
-    currentStep.value = 2;
-    // Scroll to top of form when changing steps
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-};
-
 const goToPreviousStep = () => {
-  currentStep.value = 1;
-  // Scroll to top of form when changing steps
+  currentStep.value--;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-const handleSignup = async () => {
-  if (!validateStep2()) return;
-  
-  try {
-    isLoading.value = true;
-    
-    // Simulate API call with timeout
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Signup successful
-    router.push('/auth/verify-email');
-  } catch (error) {
-    console.error('Signup failed:', error);
-  } finally {
-    isLoading.value = false;
+const handleFormSubmit = async () => {
+  if (currentStep.value === 1) {
+    if (validateStep1()) {
+      isLoading.value = true;
+      
+      // Simulate sending OTP
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      currentStep.value = 2;
+      startResendTimer();
+      
+      // Focus first OTP input
+      setTimeout(() => {
+        otpInputs.value[0]?.focus();
+      }, 100);
+      
+      isLoading.value = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  } else if (currentStep.value === 2) {
+    if (validateStep2()) {
+      isLoading.value = true;
+      
+      // Simulate OTP verification
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      currentStep.value = 3;
+      isLoading.value = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  } else if (currentStep.value === 3) {
+    if (validateStep3()) {
+      isLoading.value = true;
+      
+      // Simulate account creation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Redirect to dashboard
+      router.push('/dashboard');
+    }
   }
 };
+
+onUnmounted(() => {
+  if (resendInterval) {
+    clearInterval(resendInterval);
+  }
+});
 </script>
 
 <style scoped>
 .auth-input {
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
+  border-radius: 0.75rem;
+  border: 2px solid #e5e7eb;
+  background-color: #f9fafb;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #2C4880;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(44, 72, 128, 0.1);
+}
+
+.auth-input::placeholder {
+  color: #9ca3af;
+}
+
+.auth-input.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.auth-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.auth-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid #e5e7eb;
+  background-color: #f9fafb;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+.auth-select:focus {
+  outline: none;
+  border-color: #2C4880;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(44, 72, 128, 0.1);
+}
+
+.otp-input {
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background-color: #f9fafb;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #2C4880;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(44, 72, 128, 0.1);
+}
+
+.otp-input.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.otp-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .btn-gradient {
@@ -621,6 +777,25 @@ const handleSignup = async () => {
   --tw-gradient-to: #4476b0;
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   color: white;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-gradient:hover {
+  --tw-gradient-from: #253a6c;
+  --tw-gradient-to: #355b8f;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(44, 72, 128, 0.3);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+}
+
+.btn-gradient:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .gradient-text {
@@ -638,36 +813,78 @@ const handleSignup = async () => {
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
   color: #4b5563;
-  background-color: white;
+  background-color: #f9fafb;
   font-weight: 500;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 0.5rem;
 }
 
 .social-btn:hover {
-  background-color: #f9fafb;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  background-color: white;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .social-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(44, 72, 128, 0.2);
-}
-
-.social-btn span {
-  margin-left: 0.75rem;
+  border-color: #2C4880;
+  box-shadow: 0 0 0 3px rgba(44, 72, 128, 0.1);
 }
 
 .form-label {
   display: block;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.form-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.input-with-icon {
+  padding-left: 2.5rem;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.toggle-password-btn:hover {
+  color: #6b7280;
+}
+
+.toggle-password-btn:focus {
+  outline: none;
+  color: #2C4880;
 }
 
 /* Animation for page elements */
@@ -715,5 +932,23 @@ button[type="submit"] {
   animation: fadeIn 0.5s ease-out forwards;
   animation-delay: 0.7s;
   opacity: 0;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .auth-input {
+    font-size: 1rem; /* Prevent zoom on iOS */
+  }
+  
+  .otp-input {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+  
+  .social-btn {
+    font-size: 0.875rem;
+    padding: 0.625rem 0.75rem;
+  }
 }
 </style>
