@@ -41,7 +41,7 @@
           <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase">Support</h3>
           <ul class="mt-4 space-y-4">
             <li><a href="#" class="text-base text-gray-600 hover:text-primary-600">Help Center</a></li>
-            <li><a href="#" class="text-base text-gray-600 hover:text-primary-600">Contact Us</a></li>
+            <li><NuxtLink to="/support" class="text-base text-gray-600 hover:text-primary-600">Contact Us</NuxtLink></li>
             <li><a href="#" class="text-base text-gray-600 hover:text-primary-600">Privacy Policy</a></li>
             <li><a href="#" class="text-base text-gray-600 hover:text-primary-600">Terms of Service</a></li>
           </ul>
