@@ -251,12 +251,24 @@
               >
                 <div class="flex items-start justify-between">
                   <div class="flex items-center space-x-3">
-                    <!-- Card Icon based on type - Replaced with inline SVGs -->
+                    <!-- Card/Bank Icon based on type -->
                     <div class="h-10 w-14 flex items-center justify-center rounded bg-gray-50">
+                      <!-- Bank Account Icon -->
+                      <svg
+                        v-if="method.type === 'bank'"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 text-blue-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                      </svg>
+
                       <!-- Visa Card SVG -->
                       <svg 
-                        v-if="method.brand === 'visa'" 
-                        xmlns="http://www.w3.org/2000/svg" 
+                        v-else-if="method.brand === 'visa'"
+                        xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48" 
                         class="h-6"
                       >
@@ -302,8 +314,13 @@
                     
                     <div>
                       <div class="font-medium">
-                        {{ method.brand.charAt(0).toUpperCase() + method.brand.slice(1) }} •••• {{ method.last4 }}
-                        <span 
+                        <span v-if="method.type === 'bank'">
+                          {{ method.bankName }} •••• {{ method.last4 }}
+                        </span>
+                        <span v-else>
+                          {{ method.brand.charAt(0).toUpperCase() + method.brand.slice(1) }} •••• {{ method.last4 }}
+                        </span>
+                        <span
                           v-if="method.isDefault" 
                           class="ml-2 px-2 py-0.5 text-xs bg-primary-100 text-primary-800 rounded"
                         >
@@ -311,25 +328,45 @@
                         </span>
                       </div>
                       <div class="text-sm text-gray-500">
-                        Expires {{ method.expMonth }}/{{ method.expYear }}
+                        <span v-if="method.type === 'bank'">
+                          {{ method.accountType?.charAt(0).toUpperCase() + method.accountType?.slice(1) }} Account
+                        </span>
+                        <span v-else>
+                          Expires {{ method.expMonth }}/{{ method.expYear }}
+                        </span>
                       </div>
                     </div>
                   </div>
                   
-                  <div class="flex space-x-1">
-                    <button 
+                  <div class="flex items-center space-x-2">
+                    <!-- View Details Button -->
+                    <NuxtLink
+                      :to="`/payments/method/${method.id}`"
+                      class="p-1.5 text-sm text-primary-600 hover:text-primary-800 hover:bg-primary-50 rounded-md transition-colors"
+                      title="View details"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </NuxtLink>
+
+                    <!-- Set as Default Button -->
+                    <button
                       v-if="!method.isDefault"
                       @click="setAsDefault(method.id)"
-                      class="p-1.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-50 rounded-md"
+                      class="p-1.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-50 rounded-md transition-colors"
                       title="Set as default"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </button>
-                    <button 
+
+                    <!-- Remove Button -->
+                    <button
                       @click="removePaymentMethod(method.id)"
-                      class="p-1.5 text-sm text-gray-600 hover:text-error-600 hover:bg-gray-50 rounded-md"
+                      class="p-1.5 text-sm text-gray-600 hover:text-error-600 hover:bg-gray-50 rounded-md transition-colors"
                       title="Remove"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -339,16 +376,16 @@
                   </div>
                 </div>
                 
-                <div class="mt-3 flex justify-between text-sm">
+                <div class="mt-3 flex justify-between items-center text-sm">
                   <div class="text-gray-500">
                     {{ method.holderName }}
                   </div>
-                  <button 
-                    @click="editBillingAddress(method.id)"
-                    class="text-primary-600 hover:text-primary-800"
+                  <NuxtLink
+                    :to="`/payments/method/${method.id}`"
+                    class="text-primary-600 hover:text-primary-800 font-medium"
                   >
-                    Edit billing address
-                  </button>
+                    View Details →
+                  </NuxtLink>
                 </div>
               </div>
             </div>
@@ -765,11 +802,12 @@ const paymentDetails = reactive({ ...originalPaymentDetails });
 const paymentMethods = ref([
   {
     id: 'pm_1',
+    type: 'card',
     brand: 'visa',
     last4: '4242',
     expMonth: '12',
     expYear: '25',
-    holderName: 'John Doe', // Ensure holderName exists
+    holderName: 'John Doe',
     isDefault: true,
     billingAddress: {
       street: '123 Main St',
@@ -781,17 +819,34 @@ const paymentMethods = ref([
   },
   {
     id: 'pm_2',
+    type: 'card',
     brand: 'mastercard',
     last4: '5678',
     expMonth: '08',
     expYear: '24',
-    holderName: 'John Doe', // Ensure holderName exists
+    holderName: 'John Doe',
     isDefault: false,
     billingAddress: {
       street: '456 Park Ave',
       city: 'San Francisco',
       state: 'CA',
       postalCode: '94107',
+      country: 'United States'
+    }
+  },
+  {
+    id: 'pm_3',
+    type: 'bank',
+    bankName: 'Chase Bank',
+    accountType: 'checking',
+    last4: '9876',
+    accountHolderName: 'John Doe',
+    isDefault: false,
+    billingAddress: {
+      street: '789 Bank St',
+      city: 'Chicago',
+      state: 'IL',
+      postalCode: '60601',
       country: 'United States'
     }
   }
