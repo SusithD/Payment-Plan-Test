@@ -338,7 +338,10 @@
             <div class="px-6 py-5 border-b border-gray-100">
               <div class="flex justify-between items-center">
                 <h2 class="font-bold text-lg text-gray-900">Payment History</h2>
-                <NuxtLink to="/history" class="text-primary-600 text-sm font-medium hover:text-primary-700">View all</NuxtLink>
+                <div class="flex space-x-2">
+                  <NuxtLink to="/payments/invoices" class="text-secondary-600 text-sm font-medium hover:text-secondary-700">View Invoices</NuxtLink>
+                  <NuxtLink to="/history" class="text-primary-600 text-sm font-medium hover:text-primary-700">View all</NuxtLink>
+                </div>
               </div>
             </div>
             
@@ -463,4 +466,3 @@ const recentActivity = [
   }
 ];
 </script>
-    time: '05 Apr 2025, 
