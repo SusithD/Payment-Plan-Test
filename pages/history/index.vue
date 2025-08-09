@@ -337,6 +337,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </button>
+                    <NuxtLink 
+                      v-if="transaction.status === 'Successful'"
+                      :to="`/payments/invoices/${getInvoiceId(transaction)}`"
+                      class="text-secondary-600 hover:text-secondary-900 p-1 rounded hover:bg-secondary-50"
+                      title="View Invoice"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </NuxtLink>
                     <button 
                       v-if="transaction.status === 'Failed'"
                       @click="retryPayment(transaction)" 
@@ -949,6 +959,14 @@ const confirmRetryPayment = () => {
   console.log('Retrying payment with method:', retryPaymentMethod.value);
   showRetryModal.value = false;
   // Here you would typically make an API call to retry the payment
+};
+
+const getInvoiceId = (transaction) => {
+  // Generate invoice ID based on transaction date and ID
+  // This would typically come from your API response
+  const year = new Date(transaction.date).getFullYear();
+  const month = String(new Date(transaction.date).getMonth() + 1).padStart(2, '0');
+  return `INV-${year}-${month}${transaction.transactionId.slice(-2)}`;
 };
 
 onMounted(() => {
