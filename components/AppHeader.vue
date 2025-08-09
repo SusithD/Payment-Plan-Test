@@ -37,6 +37,93 @@
           </NuxtLink>
         </nav>
         
+        <!-- Search Bar (Desktop) -->
+        <div class="hidden lg:flex items-center flex-1 max-w-lg mx-8">
+          <div class="relative w-full">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              v-model="searchQuery"
+              @keyup.enter="performSearch"
+              @focus="showSearchSuggestions = true"
+              @blur="hideSearchSuggestions"
+              placeholder="Search payments, invoices, help..."
+              class="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+            />
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 border border-gray-200 rounded text-xs text-gray-500 bg-white">
+                ⌘K
+              </kbd>
+            </div>
+            
+            <!-- Search Suggestions Dropdown -->
+            <div 
+              v-if="showSearchSuggestions && (searchQuery.length > 0 || popularSearches.length > 0)"
+              class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-80 overflow-y-auto"
+            >
+              <!-- Quick Results -->
+              <div v-if="searchQuery.length > 2 && quickResults.length > 0" class="border-b border-gray-100 p-2">
+                <div class="text-xs font-medium text-gray-500 uppercase tracking-wide px-2 py-1">Quick Results</div>
+                <div 
+                  v-for="result in quickResults.slice(0, 3)" 
+                  :key="result.id"
+                  @mousedown="navigateToResult(result)"
+                  class="flex items-center px-2 py-2 hover:bg-gray-50 rounded cursor-pointer"
+                >
+                  <div class="h-6 w-6 rounded-full flex items-center justify-center mr-2"
+                       :class="getResultIconClass(result.type)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path v-if="result.type === 'payment'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <path v-else-if="result.type === 'invoice'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium text-gray-900 truncate">{{ result.title }}</div>
+                    <div class="text-xs text-gray-500 truncate">{{ result.description }}</div>
+                  </div>
+                  <div v-if="result.amount" class="text-xs font-medium text-gray-700">${{ result.amount }}</div>
+                </div>
+              </div>
+              
+              <!-- Popular Searches -->
+              <div v-if="searchQuery.length === 0" class="p-2">
+                <div class="text-xs font-medium text-gray-500 uppercase tracking-wide px-2 py-1">Popular Searches</div>
+                <div 
+                  v-for="search in popularSearches.slice(0, 4)" 
+                  :key="search.query"
+                  @mousedown="performPopularSearch(search.query)"
+                  class="flex items-center px-2 py-2 hover:bg-gray-50 rounded cursor-pointer"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <div class="flex-1">
+                    <div class="text-sm text-gray-900">{{ search.query }}</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- View All Results -->
+              <div v-if="searchQuery.length > 0" class="border-t border-gray-100 p-2">
+                <button 
+                  @mousedown="viewAllResults"
+                  class="w-full flex items-center justify-center px-2 py-2 text-sm text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded"
+                >
+                  View all results for "{{ searchQuery }}"
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!-- Enhanced User Menu (Desktop) -->
         <div class="hidden md:flex items-center space-x-3">
           <!-- Notifications Bell -->
@@ -235,6 +322,42 @@ const getMobileNavLinkClass = (href) => {
   return route.path === href 
     ? 'text-[#2C4880] bg-gradient-to-r from-primary-50 to-primary-100 border-l-4 border-primary-500' 
     : 'text-gray-700 hover:text-[#2C4880] hover:bg-gray-50';
+};
+
+// Search functionality
+const searchQuery = ref('');
+const showSearchSuggestions = ref(false);
+const quickResults = ref([]);
+const popularSearches = ref([
+  { query: 'Payment plans' },
+  { query: 'Invoice history' },
+  { query: 'Support tickets' },
+  { query: 'API documentation' },
+]);
+
+// Mock function to simulate search result navigation
+const navigateToResult = (result) => {
+  console.log('Navigating to result:', result);
+};
+
+// Perform search action
+const performSearch = () => {
+  if (searchQuery.value.trim() === '') return;
+  console.log('Performing search for:', searchQuery.value);
+  // Implement search logic here
+};
+
+// Perform popular search action
+const performPopularSearch = (query) => {
+  searchQuery.value = query;
+  performSearch();
+};
+
+// View all results action
+const viewAllResults = () => {
+  if (searchQuery.value.trim() === '') return;
+  console.log('Viewing all results for:', searchQuery.value);
+  // Implement view all results logic here
 };
 
 // Logout function
