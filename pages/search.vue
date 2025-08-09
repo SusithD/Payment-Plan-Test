@@ -303,7 +303,8 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 definePageMeta({
   title: 'Search - CoverageX Payment Solutions',
@@ -419,6 +420,13 @@ function performSearch() {
   const startTime = Date.now();
   hasSearched.value = true;
   
+  // Update URL without triggering navigation
+  const router = useRouter();
+  router.replace({ 
+    path: '/search', 
+    query: { q: searchQuery.value } 
+  });
+  
   // Simulate search delay
   setTimeout(() => {
     const query = searchQuery.value.toLowerCase();
@@ -456,6 +464,23 @@ function applyQuickFilter(filter) {
     activeTab.value = 'article';
   }
 }
+
+// Get query parameter from URL on page load
+onMounted(() => {
+  const route = useRoute();
+  if (route.query.q) {
+    searchQuery.value = route.query.q;
+    performSearch();
+  }
+});
+
+// Watch for route changes to handle back/forward navigation
+watch(() => route.query.q, (newQuery) => {
+  if (newQuery && newQuery !== searchQuery.value) {
+    searchQuery.value = newQuery;
+    performSearch();
+  }
+});
 
 // Watch for changes
 watch(searchQuery, (newValue) => {

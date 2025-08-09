@@ -103,13 +103,29 @@
       <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8">
         <div class="px-6 py-4 border-b border-gray-100">
           <div class="flex justify-between items-center">
-            <h2 class="font-bold text-lg text-gray-900">Filter & Search Transactions</h2>
-            <button @click="resetFilters" class="text-sm text-gray-500 hover:text-gray-700 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Reset All
-            </button>
+            <div>
+              <h2 class="font-bold text-lg text-gray-900">Filter & Search Transactions</h2>
+              <p class="text-sm text-gray-500 mt-1">
+                Search across all your payment transactions and history
+              </p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <NuxtLink 
+                to="/search?q=payment history" 
+                class="text-primary-600 hover:text-primary-700 text-sm font-medium inline-flex items-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Advanced Search
+              </NuxtLink>
+              <button @click="resetFilters" class="text-sm text-gray-500 hover:text-gray-700 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Reset All
+              </button>
+            </div>
           </div>
         </div>
         

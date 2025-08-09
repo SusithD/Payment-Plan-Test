@@ -212,14 +212,14 @@
                 <span class="text-sm font-medium text-gray-900">Schedule</span>
               </button>
               
-              <button class="flex flex-col items-center justify-center bg-purple-50 rounded-lg p-4 hover:bg-purple-100 transition-colors">
+              <NuxtLink to="/search" class="flex flex-col items-center justify-center bg-purple-50 rounded-lg p-4 hover:bg-purple-100 transition-colors">
                 <div class="h-10 w-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-3">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <span class="text-sm font-medium text-gray-900">Support</span>
-              </button>
+                <span class="text-sm font-medium text-gray-900">Search</span>
+              </NuxtLink>
             </div>
           </div>
           

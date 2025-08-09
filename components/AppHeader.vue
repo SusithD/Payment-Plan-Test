@@ -292,7 +292,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
@@ -329,36 +329,124 @@ const searchQuery = ref('');
 const showSearchSuggestions = ref(false);
 const quickResults = ref([]);
 const popularSearches = ref([
-  { query: 'Payment plans' },
-  { query: 'Invoice history' },
-  { query: 'Support tickets' },
-  { query: 'API documentation' },
+  { query: 'payment history', description: 'View your payment transactions' },
+  { query: 'make payment', description: 'Process a new payment' },
+  { query: 'invoice download', description: 'Download payment receipts' },
+  { query: 'payment methods', description: 'Manage payment options' }
 ]);
 
-// Mock function to simulate search result navigation
+// Sample quick results data
+const sampleResults = [
+  {
+    id: 1,
+    type: 'payment',
+    title: 'Monthly Payment - July 2025',
+    description: 'Successful payment for July installment',
+    amount: '250.00',
+    url: '/history'
+  },
+  {
+    id: 2,
+    type: 'invoice',
+    title: 'Payment Receipt - July 2025',
+    description: 'Receipt for July payment',
+    amount: '250.00',
+    url: '/payments/invoices/INV-2025-0701'
+  },
+  {
+    id: 3,
+    type: 'article',
+    title: 'How to Set Up AutoPay',
+    description: 'Learn how to configure automatic payments',
+    url: '/support'
+  }
+];
+
+// Watch for search query changes to trigger quick search
+watch(searchQuery, (newValue) => {
+  if (newValue.length > 2) {
+    performQuickSearch();
+  } else {
+    quickResults.value = [];
+  }
+});
+
+// Get result icon class based on type
+const getResultIconClass = (type) => {
+  switch (type) {
+    case 'payment':
+      return 'bg-success-100 text-success-600';
+    case 'invoice':
+      return 'bg-primary-100 text-primary-600';
+    case 'article':
+      return 'bg-accent-100 text-accent-600';
+    default:
+      return 'bg-gray-100 text-gray-600';
+  }
+};
+
+// Perform quick search for dropdown suggestions
+const performQuickSearch = () => {
+  const query = searchQuery.value.toLowerCase();
+  quickResults.value = sampleResults.filter(result => 
+    result.title.toLowerCase().includes(query) ||
+    result.description.toLowerCase().includes(query)
+  );
+};
+
+// Navigate to search result
 const navigateToResult = (result) => {
-  console.log('Navigating to result:', result);
+  hideSearchSuggestions();
+  router.push(result.url);
+  searchQuery.value = '';
 };
 
 // Perform search action
 const performSearch = () => {
   if (searchQuery.value.trim() === '') return;
-  console.log('Performing search for:', searchQuery.value);
-  // Implement search logic here
+  hideSearchSuggestions();
+  router.push(`/search?q=${encodeURIComponent(searchQuery.value)}`);
 };
 
 // Perform popular search action
 const performPopularSearch = (query) => {
   searchQuery.value = query;
-  performSearch();
+  hideSearchSuggestions();
+  router.push(`/search?q=${encodeURIComponent(query)}`);
 };
 
 // View all results action
 const viewAllResults = () => {
   if (searchQuery.value.trim() === '') return;
-  console.log('Viewing all results for:', searchQuery.value);
-  // Implement view all results logic here
+  hideSearchSuggestions();
+  router.push(`/search?q=${encodeURIComponent(searchQuery.value)}`);
 };
+
+// Hide search suggestions with delay for click events
+const hideSearchSuggestions = () => {
+  setTimeout(() => {
+    showSearchSuggestions.value = false;
+  }, 150);
+};
+
+// Keyboard shortcut for search (Cmd+K)
+onMounted(() => {
+  const handleKeydown = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      const searchInput = document.querySelector('input[placeholder*="Search"]');
+      if (searchInput) {
+        searchInput.focus();
+      }
+    }
+  };
+  
+  document.addEventListener('keydown', handleKeydown);
+  
+  return () => {
+    document.removeEventListener('keydown', handleKeydown);
+  };
+});
 
 // Logout function
 const logout = () => {
@@ -367,58 +455,3 @@ const logout = () => {
   router.push('/auth/login');
 };
 </script>
-
-<style scoped>
-.container-custom {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.btn-primary {
-  @apply bg-gradient-to-r from-[#2C4880] to-[#1e3563] hover:from-[#1e3563] hover:to-[#2C4880] text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
-}
-
-.slide-down {
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Enhanced mobile menu item animation */
-.md\:hidden .space-y-1 > * {
-  animation: slideInLeft 0.4s ease-out forwards;
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-@keyframes slideInLeft {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Backdrop blur support check */
-@supports (backdrop-filter: blur(12px)) {
-  .backdrop-blur-md {
-    backdrop-filter: blur(12px);
-  }
-}
-
-/* Fallback for browsers without backdrop-filter support */
-@supports not (backdrop-filter: blur(12px)) {
-  .bg-white\/95 {
-    background-color: rgba(255, 255, 255, 0.98);
-  }
-}
-</style>
