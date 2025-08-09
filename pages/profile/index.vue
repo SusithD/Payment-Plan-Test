@@ -495,9 +495,17 @@
                       ${{ payment.amount.toFixed(2) }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button @click="viewReceipt(payment)" class="text-primary-600 hover:text-primary-900">
-                        View Receipt
-                      </button>
+                      <div class="flex items-center justify-end space-x-2">
+                        <button @click="viewReceipt(payment)" class="text-primary-600 hover:text-primary-900">
+                          View Receipt
+                        </button>
+                        <NuxtLink 
+                          :to="`/payments/invoices/INV-${payment.date.split(' ')[2]}-${payment.transactionId.slice(-4)}`"
+                          class="text-secondary-600 hover:text-secondary-900"
+                        >
+                          View Invoice
+                        </NuxtLink>
+                      </div>
                     </td>
                   </tr>
                   <tr v-if="completedPayments.length === 0">
