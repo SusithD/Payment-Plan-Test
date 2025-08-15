@@ -201,40 +201,71 @@
         </div>
       </div>
       
-      <!-- Impact Information Card -->
+      <!-- Next Payment Details Card -->
       <div v-if="status === 'success'" class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8">
         <div class="px-6 py-5 border-b border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900">Payment Impact</h2>
+          <h2 class="text-xl font-bold text-gray-900">Next Payment Details</h2>
         </div>
         
         <div class="p-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-gradient-to-r from-primary-50 to-blue-50 p-6 rounded-lg mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Upcoming Payment</h3>
+                <p class="text-sm text-gray-600">Due on {{ nextPayment.dueDate }}</p>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-bold text-primary-600">${{ nextPayment.amount.toFixed(2) }}</div>
+                <div class="text-sm text-gray-500">{{ nextPayment.daysUntilDue }} days remaining</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2">
+                  <div class="h-2 w-2 bg-warning-500 rounded-full"></div>
+                  <span class="text-sm text-gray-600">Payment Status: {{ nextPayment.status }}</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span class="text-sm text-gray-600">{{ nextPayment.description }}</span>
+                </div>
+              </div>
+              
+              <button 
+                @click="makeNextPayment" 
+                class="btn-primary flex items-center space-x-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>Make Payment</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="text-center p-4 border border-gray-100 rounded-lg">
-              <div class="text-3xl font-bold text-success-600 mb-1">
+              <div class="text-2xl font-bold text-success-600 mb-1">
                 {{ paymentImpact.planProgress }}%
               </div>
-              <p class="text-gray-500 text-sm">Payment Plan Progress</p>
+              <p class="text-gray-500 text-sm">Plan Progress</p>
             </div>
             
             <div class="text-center p-4 border border-gray-100 rounded-lg">
-              <div class="text-3xl font-bold text-primary-600 mb-1">
+              <div class="text-2xl font-bold text-primary-600 mb-1">
                 ${{ paymentImpact.remainingBalance.toFixed(0) }}
               </div>
               <p class="text-gray-500 text-sm">Remaining Balance</p>
             </div>
             
             <div class="text-center p-4 border border-gray-100 rounded-lg">
-              <div class="text-3xl font-bold text-gray-900 mb-1">
-                {{ paymentImpact.nextPaymentDate }}
+              <div class="text-2xl font-bold text-warning-600 mb-1">
+                {{ nextPayment.daysUntilDue }}
               </div>
-              <p class="text-gray-500 text-sm">Next Payment Due</p>
-            </div>
-            
-            <div class="text-center p-4 border border-gray-100 rounded-lg">
-              <div class="text-3xl font-bold text-warning-600 mb-1">
-                ${{ paymentImpact.nextPaymentAmount }}
-              </div>
-              <p class="text-gray-500 text-sm">Next Payment Amount</p>
+              <p class="text-gray-500 text-sm">Days Until Due</p>
             </div>
           </div>
           
@@ -246,9 +277,9 @@
                 </svg>
               </div>
               <div class="ml-3">
-                <h3 class="text-sm font-medium text-blue-800">About Your Payment Plan</h3>
+                <h3 class="text-sm font-medium text-blue-800">Stay on Track</h3>
                 <div class="mt-2 text-sm text-blue-700">
-                  <p>Your timely payment has contributed positively to your payment plan. Continue making payments on time to avoid late fees and maintain a good payment history.</p>
+                  <p>Make your next payment early to avoid late fees and maintain a good payment history. You can also set up automatic payments for convenience.</p>
                 </div>
               </div>
             </div>
@@ -258,17 +289,30 @@
       
       <!-- Actions -->
       <div class="flex flex-col sm:flex-row items-center justify-between">
-        <NuxtLink to="/history" class="btn-outline mt-3 sm:mt-0">
-          View Payment History
-        </NuxtLink>
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+          <NuxtLink to="/history" class="btn-outline">
+            View Payment History
+          </NuxtLink>
+          <NuxtLink to="/payments" class="btn-outline">
+            View All Payments
+          </NuxtLink>
+        </div>
         
         <div class="space-x-2 mt-3 sm:mt-0">
           <button v-if="status === 'error'" @click="retryPayment" class="btn-primary">
             Try Again
           </button>
-          <NuxtLink v-if="status === 'success'" to="/dashboard" class="btn-primary">
-            Go to Dashboard
-          </NuxtLink>
+          <div v-if="status === 'success'" class="flex space-x-2">
+            <button @click="makeNextPayment" class="btn-primary flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Make Next Payment</span>
+            </button>
+            <NuxtLink to="/dashboard" class="btn-outline">
+              Go to Dashboard
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </div>
@@ -320,6 +364,16 @@ const paymentImpact = ref({
   nextPaymentAmount: 250
 });
 
+// Next payment details
+const nextPayment = ref({
+  id: 'payment_001',
+  description: 'Monthly Instalment (June 2025)',
+  dueDate: 'Jun 15, 2025',
+  amount: 250.00,
+  status: 'Due Soon',
+  daysUntilDue: 25
+});
+
 onMounted(() => {
   // Check URL parameters for status
   if (route.query.status) {
@@ -335,5 +389,19 @@ const downloadReceipt = () => {
 // Function to retry a failed payment
 const retryPayment = () => {
   router.push('/payments/review');
+};
+
+// Function to make the next payment
+const makeNextPayment = () => {
+  // Navigate to review page with the next payment details
+  router.push({
+    path: '/payments/review',
+    query: {
+      paymentId: nextPayment.value.id,
+      amount: nextPayment.value.amount,
+      description: nextPayment.value.description,
+      dueDate: nextPayment.value.dueDate
+    }
+  });
 };
 </script>
