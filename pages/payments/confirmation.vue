@@ -70,6 +70,17 @@
         </div>
       </div>
       
+      <div v-if="status === 'processing'" class="mb-8 text-center">
+        <div class="mx-auto bg-warning-100 rounded-full h-24 w-24 flex items-center justify-center mb-6">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-warning-600"></div>
+        </div>
+        
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Payment Processing</h2>
+        <p class="text-gray-600 max-w-md mx-auto">
+          Your bank transfer is being processed. This typically takes 1-3 business days. You'll receive an email confirmation once completed.
+        </p>
+      </div>
+      
       <div v-if="status === 'error'" class="mb-8 text-center">
         <div class="mx-auto bg-error-100 rounded-full h-24 w-24 flex items-center justify-center mb-6">
           <svg class="h-12 w-12 text-error-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -201,6 +212,89 @@
         </div>
       </div>
       
+      <!-- Payment Processing Card -->
+      <div v-if="status === 'processing'" class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8">
+        <div class="px-6 py-5 border-b border-gray-100">
+          <h2 class="text-xl font-bold text-gray-900">Payment Processing</h2>
+        </div>
+        
+        <div class="p-6">
+          <div class="bg-gradient-to-r from-warning-50 to-orange-50 p-6 rounded-lg mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-warning-600"></div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900">Processing Your Payment</h3>
+                  <p class="text-sm text-gray-600">Your bank transfer is being processed</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-bold text-warning-600">${{ receipt.total.toFixed(2) }}</div>
+                <div class="text-sm text-gray-500">Processing Time: 1-3 business days</div>
+              </div>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg border border-warning-200">
+              <div class="flex items-start space-x-3">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-warning-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="text-sm font-medium text-warning-800">What happens next?</h4>
+                  <ul class="mt-2 text-sm text-warning-700 space-y-1">
+                    <li>• Your bank will process the transfer within 1-3 business days</li>
+                    <li>• You'll receive an email confirmation once the payment is completed</li>
+                    <li>• The payment will appear in your payment history</li>
+                    <li>• Your next payment due date will be updated accordingly</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center p-4 border border-gray-100 rounded-lg">
+              <div class="text-2xl font-bold text-warning-600 mb-1">
+                {{ processingDetails.estimatedDays }}
+              </div>
+              <p class="text-gray-500 text-sm">Estimated Days</p>
+            </div>
+            
+            <div class="text-center p-4 border border-gray-100 rounded-lg">
+              <div class="text-2xl font-bold text-primary-600 mb-1">
+                {{ processingDetails.transactionId }}
+              </div>
+              <p class="text-gray-500 text-sm">Transaction ID</p>
+            </div>
+            
+            <div class="text-center p-4 border border-gray-100 rounded-lg">
+              <div class="text-2xl font-bold text-gray-900 mb-1">
+                {{ processingDetails.paymentMethod }}
+              </div>
+              <p class="text-gray-500 text-sm">Payment Method</p>
+            </div>
+          </div>
+          
+          <div class="mt-6 bg-blue-50 p-4 rounded-lg">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-blue-800">Processing Information</h3>
+                <div class="mt-2 text-sm text-blue-700">
+                  <p>Bank transfers typically take 1-3 business days to complete. You can track the status in your payment history. No further action is required from your side.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Next Payment Details Card -->
       <div v-if="status === 'success'" class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8">
         <div class="px-6 py-5 border-b border-gray-100">
@@ -302,6 +396,14 @@
           <button v-if="status === 'error'" @click="retryPayment" class="btn-primary">
             Try Again
           </button>
+          <div v-if="status === 'processing'" class="flex space-x-2">
+            <NuxtLink to="/history" class="btn-primary">
+              Track Payment Status
+            </NuxtLink>
+            <NuxtLink to="/dashboard" class="btn-outline">
+              Go to Dashboard
+            </NuxtLink>
+          </div>
           <div v-if="status === 'success'" class="flex space-x-2">
             <button @click="makeNextPayment" class="btn-primary flex items-center space-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -372,6 +474,16 @@ const nextPayment = ref({
   amount: 250.00,
   status: 'Due Soon',
   daysUntilDue: 25
+});
+
+// Processing details for bank transfers
+const processingDetails = ref({
+  estimatedDays: '1-3',
+  transactionId: 'TXN-12345-ABCDE',
+  paymentMethod: 'Bank Transfer',
+  processingTime: '1-3 business days',
+  bankName: 'Chase Bank',
+  accountLast4: '1234'
 });
 
 onMounted(() => {
