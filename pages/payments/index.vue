@@ -359,27 +359,158 @@
                   </div>
                 </div>
               </div>
-              <div class="mt-6">
-                <button @click="showAutopaySettings = !showAutopaySettings" class="text-primary-600 text-sm font-medium hover:text-primary-800 flex items-center w-full justify-between">
-                  <span>Autopay Settings</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transition-transform" :class="{ 'rotate-180': showAutopaySettings }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <div v-if="showAutopaySettings" class="mt-3 p-3 bg-gray-50 rounded-lg">
-                  <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm font-medium">AutoPay Status</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                      <input v-model="autopayEnabled" type="checkbox" class="sr-only peer">
-                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
-                    </label>
+              <div class="mt-6 pt-4 border-t border-gray-200">
+                <h3 class="text-md font-medium mb-3">Payment Methods</h3>
+                <div v-if="userPaymentMethods.length === 0" class="text-center py-4">
+                  <div class="mx-auto h-8 w-8 text-gray-400 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
                   </div>
-                  <div v-if="autopayEnabled" class="mt-3 space-y-2 text-sm">
-                    <p class="text-gray-600">Your next automatic payment of ${{ formatCurrency(nextPaymentAmount) }} will be processed on {{ formatDueDate(nextPaymentDue) }}.</p>
-                    <p class="text-gray-500">Using {{ defaultPaymentMethod }}</p>
+                  <p class="text-sm text-gray-500 mb-3">No payment methods added</p>
+                  <NuxtLink to="/payments/add-method" class="text-primary-600 hover:text-primary-800 text-sm font-medium">
+                    Add Payment Method
+                  </NuxtLink>
+                </div>
+                <div v-else class="space-y-3">
+                  <div 
+                    v-for="(method, index) in userPaymentMethods" 
+                    :key="index"
+                    class="border border-gray-200 rounded-lg p-3 hover:shadow-sm transition-shadow"
+                  >
+                    <div class="flex items-start justify-between">
+                      <div class="flex items-center space-x-3">
+                        <!-- Card/Bank Icon based on type -->
+                        <div class="h-8 w-10 flex items-center justify-center rounded bg-gray-50">
+                          <!-- Bank Account Icon -->
+                          <svg
+                            v-if="method.type === 'bank'"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                          </svg>
+
+                          <!-- Visa Card SVG -->
+                          <svg 
+                            v-else-if="method.brand === 'visa'"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 48 48" 
+                            class="h-4"
+                          >
+                            <path fill="#1565C0" d="M45,35c0,2.209-1.791,4-4,4H7c-2.209,0-4-1.791-4-4V13c0-2.209,1.791-4,4-4h34c2.209,0,4,1.791,4,4V35z"/>
+                            <path fill="#FFF" d="M15.186 19l-2.626 7.832c0 0-.667-3.313-.733-3.729-1.495-3.411-3.701-3.221-3.701-3.221L10.726 30v-.002h3.161L18.258 19H15.186zM17.689 30L20.56 30 22.296 19 19.389 19zM38.008 19h-3.021l-4.71 11h2.852l.588-1.571h3.596L37.619 30h2.613L38.008 19zM34.513 26.328l1.563-4.157.818 4.157H34.513zM26.369 22.206c0-.606.498-1.057 1.926-1.057.928 0 1.991.302 1.991.302l.466-2.158c0 0-1.358-.515-2.691-.515-3.019 0-4.576 1.444-4.576 3.272 0 3.294 3.979 2.824 3.979 4.38 0 .513-.545.884-1.7.884-1.407 0-2.773-.486-2.773-.486l-.495 2.202c0 0 1.303.594 3.132.594 2.744 0 4.576-1.39 4.576-3.258C30.205 23.175 26.369 23.457 26.369 22.206z"/>
+                          </svg>
+                          
+                          <!-- Mastercard SVG -->
+                          <svg 
+                            v-else-if="method.brand === 'mastercard'" 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 48 48" 
+                            class="h-4"
+                          >
+                            <path fill="#FF5F00" d="M32,25H16V8h16V25z"/>
+                            <path fill="#EB001B" d="M19.5,16.5c0-3.59,1.69-6.79,4.3-8.86c-1.89-1.47-4.24-2.33-6.8-2.33c-6.14,0-11.14,5-11.14,11.14 s5,11.14,11.14,11.14c2.56,0,4.91-0.87,6.8-2.33C21.19,23.29,19.5,20.09,19.5,16.5z"/>
+                            <path fill="#F79E1B" d="M42,16.5c0,6.14-5,11.14-11.14,11.14c-2.56,0-4.91-0.87-6.8-2.33c2.61-2.08,4.3-5.27,4.3-8.86 s-1.69-6.79-4.3-8.86c1.89-1.47,4.24-2.33,6.8-2.33C37,5.36,42,10.36,42,16.5z"/>
+                          </svg>
+                          
+                          <!-- Generic Card SVG for other card types -->
+                          <svg 
+                            v-else
+                            xmlns="http://www.w3.org/2000/svg" 
+                            class="h-4 w-4 text-gray-400" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                          </svg>
+                        </div>
+                        
+                        <div>
+                          <div class="font-medium text-sm">
+                            <span v-if="method.type === 'bank'">
+                              {{ method.bankName }} •••• {{ method.last4 }}
+                            </span>
+                            <span v-else>
+                              {{ method.brand.charAt(0).toUpperCase() + method.brand.slice(1) }} •••• {{ method.last4 }}
+                            </span>
+                            <span
+                              v-if="method.isDefault" 
+                              class="ml-1 px-1.5 py-0.5 text-xs bg-primary-100 text-primary-800 rounded"
+                            >
+                              Default
+                            </span>
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            <span v-if="method.type === 'bank'">
+                              {{ method.accountType?.charAt(0).toUpperCase() + method.accountType?.slice(1) }} Account
+                            </span>
+                            <span v-else>
+                              Expires {{ method.expMonth }}/{{ method.expYear }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="flex items-center space-x-1">
+                        <!-- View Details Button -->
+                        <NuxtLink
+                          :to="`/payments/method/${method.id}`"
+                          class="p-1 text-xs text-primary-600 hover:text-primary-800 hover:bg-primary-50 rounded transition-colors"
+                          title="View details"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        </NuxtLink>
+
+                        <!-- Set as Default Button -->
+                        <button
+                          v-if="!method.isDefault"
+                          @click="setAsDefault(method.id)"
+                          class="p-1 text-xs text-gray-600 hover:text-primary-600 hover:bg-gray-50 rounded transition-colors"
+                          title="Set as default"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </button>
+
+                        <!-- Edit Button -->
+                        <button
+                          @click="editPaymentMethod(method.id)"
+                          class="p-1 text-xs text-gray-600 hover:text-primary-600 hover:bg-gray-50 rounded transition-colors"
+                          title="Edit"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div class="mt-2 flex justify-between items-center text-xs">
+                      <div class="text-gray-500">
+                        {{ method.holderName }}
+                      </div>
+                      <NuxtLink
+                        :to="`/payments/method/${method.id}`"
+                        class="text-primary-600 hover:text-primary-800 font-medium"
+                      >
+                        View Details →
+                      </NuxtLink>
+                    </div>
                   </div>
-                  <div v-else class="mt-2 text-sm text-gray-600">
-                    Enable AutoPay to automatically pay your bills on the due date.
+                  
+                  <div class="pt-2">
+                    <NuxtLink to="/payments/add-method" class="text-primary-600 hover:text-primary-800 text-sm font-medium">
+                      + Add New Payment Method
+                    </NuxtLink>
                   </div>
                 </div>
               </div>
@@ -530,9 +661,7 @@ const completedPayments = ref(10);
 const totalPayments = ref(20);
 const paymentFrequency = ref('Monthly');
 const finalPaymentDate = ref('Jan 15, 2026');
-const showAutopaySettings = ref(false);
-const autopayEnabled = ref(true);
-const defaultPaymentMethod = ref('Visa ending in 1234');
+
 
 // Last payment information
 const lastPaymentAmount = ref(250.00);
@@ -592,7 +721,7 @@ const payments = ref([
   },
 ]);
 
-// Mock data for payment methods
+// Mock data for payment methods (for payment modal)
 const paymentMethods = ref([
   {
     id: 'card1',
@@ -611,6 +740,60 @@ const paymentMethods = ref([
     name: 'Bank Account',
     details: 'Checking **** 9012',
     icon: null
+  }
+]);
+
+// Mock data for user payment methods (for payment methods section)
+const userPaymentMethods = ref([
+  {
+    id: 'pm_1',
+    type: 'card',
+    brand: 'visa',
+    last4: '4242',
+    expMonth: '12',
+    expYear: '25',
+    holderName: 'John Doe',
+    isDefault: true,
+    billingAddress: {
+      street: '123 Main St',
+      city: 'New York',
+      state: 'NY',
+      postalCode: '10001',
+      country: 'United States'
+    }
+  },
+  {
+    id: 'pm_2',
+    type: 'card',
+    brand: 'mastercard',
+    last4: '5678',
+    expMonth: '08',
+    expYear: '24',
+    holderName: 'John Doe',
+    isDefault: false,
+    billingAddress: {
+      street: '456 Park Ave',
+      city: 'San Francisco',
+      state: 'CA',
+      postalCode: '94107',
+      country: 'United States'
+    }
+  },
+  {
+    id: 'pm_3',
+    type: 'bank',
+    bankName: 'Chase Bank',
+    accountType: 'checking',
+    last4: '9876',
+    holderName: 'John Doe',
+    isDefault: false,
+    billingAddress: {
+      street: '789 Bank St',
+      city: 'Chicago',
+      state: 'IL',
+      postalCode: '60601',
+      country: 'United States'
+    }
   }
 ]);
 
@@ -780,6 +963,20 @@ const proceedToReview = () => {
   }
   
   router.push('/payments/review');
+};
+
+// Payment Methods Management
+const setAsDefault = (id) => {
+  userPaymentMethods.value.forEach(method => {
+    method.isDefault = method.id === id;
+  });
+  // In a real app, you would send this change to an API
+  alert('Default payment method updated!');
+};
+
+const editPaymentMethod = (id) => {
+  // In a real app, this would navigate to an edit page or open a modal
+  router.push(`/payments/method/${id}/edit`);
 };
 
 onMounted(() => {
