@@ -35,28 +35,26 @@
     <!-- Status Overview Cards -->
     <div class="container-custom py-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <!-- Payments Made Card -->
+        <!-- Account Status Card -->
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <div class="flex justify-between mb-4">
             <div>
-              <p class="text-sm font-medium text-gray-500">Payments Made</p>
-              <h3 class="text-2xl font-bold text-gray-900">{{ completedPayments }}</h3>
-              <p class="text-sm text-gray-600 mt-1">of {{ totalPayments }} total</p>
+              <p class="text-sm font-medium text-gray-500">Account Status</p>
+              <h3 class="text-2xl font-bold text-gray-900">{{ accountStatus }}</h3>
+              <p class="text-sm text-gray-600 mt-1">Since {{ accountCreationDate }}</p>
             </div>
-            <div class="h-12 w-12 rounded-full bg-success-100 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-success-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="h-12 w-12 rounded-full flex items-center justify-center"
+                 :class="getAccountStatusClasses(accountStatus)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
           </div>
           <div class="flex justify-between text-sm">
-            <span class="text-gray-500">Completion:</span>
-            <span class="font-medium text-gray-900">{{ completionPercentage }}%</span>
-          </div>
-          <div class="mt-4">
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-success-500 h-2 rounded-full" :style="{ width: `${completionPercentage}%` }"></div>
-            </div>
+            <span class="text-gray-500">Delinquency:</span>
+            <span :class="delinquencyStatus ? 'text-red-600' : 'text-green-600'">
+              {{ delinquencyStatus ? 'Past Due' : 'Current' }}
+            </span>
           </div>
         </div>
 
@@ -662,6 +660,10 @@ const totalPayments = ref(20);
 const paymentFrequency = ref('Monthly');
 const finalPaymentDate = ref('Jan 15, 2026');
 
+// Account Status data
+const accountStatus = ref('Active');
+const accountCreationDate = ref('March 15, 2024');
+const delinquencyStatus = ref(false);
 
 // Last payment information
 const lastPaymentAmount = ref(250.00);
@@ -672,6 +674,25 @@ const lastPaymentTime = ref('2:30 PM');
 const showPaymentModal = ref(false);
 const paymentAmount = ref('');
 const selectedPaymentMethod = ref('card1');
+
+// Active Payment Methods data
+const autopayEnabled = ref(true);
+
+// Computed properties for Active Payment Methods Card
+const activePaymentMethodsCount = computed(() => {
+  return userPaymentMethods.value.filter(method => method.isActive !== false).length;
+});
+
+const defaultPaymentMethod = computed(() => {
+  const defaultMethod = userPaymentMethods.value.find(method => method.isDefault);
+  if (!defaultMethod) return 'No default set';
+  
+  if (defaultMethod.type === 'bank') {
+    return `${defaultMethod.bankName} •••• ${defaultMethod.last4}`;
+  } else {
+    return `${defaultMethod.brand.charAt(0).toUpperCase() + defaultMethod.brand.slice(1)} •••• ${defaultMethod.last4}`;
+  }
+});
 
 // Payment schedule filter state
 const filterStatus = ref('all');
@@ -977,6 +998,21 @@ const setAsDefault = (id) => {
 const editPaymentMethod = (id) => {
   // In a real app, this would navigate to an edit page or open a modal
   router.push(`/payments/method/${id}/edit`);
+};
+
+const getAccountStatusClasses = (status) => {
+  switch (status.toLowerCase()) {
+    case 'active':
+      return 'bg-green-100 text-green-600';
+    case 'inactive':
+      return 'bg-gray-100 text-gray-600';
+    case 'suspended':
+      return 'bg-red-100 text-red-600';
+    case 'pending':
+      return 'bg-yellow-100 text-yellow-600';
+    default:
+      return 'bg-gray-100 text-gray-600';
+  }
 };
 
 onMounted(() => {
