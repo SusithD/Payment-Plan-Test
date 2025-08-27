@@ -178,9 +178,17 @@
 
               <form @submit.prevent="saveChanges">
                 <div class="space-y-6">
-                  <!-- Card Information (Read-only) -->
-                  <div v-if="paymentMethod?.type === 'card'" class="bg-gray-50 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold mb-4 text-gray-900">Card Information</h3>
+                  <!-- Card Information -->
+                  <div v-if="paymentMethod?.type === 'card'" class="bg-gray-50 rounded-lg p-4 border-2" :class="isEditing ? 'border-primary-200 bg-primary-50' : 'border-gray-200'">
+                    <div class="flex items-center justify-between mb-4">
+                      <h3 class="text-lg font-semibold text-gray-900">Card Information</h3>
+                      <div v-if="isEditing" class="flex items-center text-primary-600 text-sm font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Editing Mode
+                      </div>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label class="form-label text-gray-700">Card Type</label>
@@ -194,10 +202,57 @@
                           •••• •••• •••• {{ paymentMethod?.last4 }}
                         </div>
                       </div>
-                      <div>
-                        <label class="form-label text-gray-700">Expiry Date</label>
-                        <div class="text-gray-900 font-medium">
+                      <div class="relative">
+                        <label class="form-label text-gray-700 flex items-center">
+                          Expiry Date
+                          <span v-if="isEditing" class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Editable
+                          </span>
+                        </label>
+                        <div v-if="!isEditing" class="text-gray-900 font-medium bg-white p-2 rounded border">
                           {{ paymentMethod?.expMonth }}/{{ paymentMethod?.expYear }}
+                        </div>
+                        <div v-else class="grid grid-cols-2 gap-2">
+                          <div class="relative">
+                            <select
+                              v-model="editableData.expMonth"
+                              class="form-select text-sm bg-white border-primary-300 focus:border-primary-500 focus:ring-primary-500"
+                              :class="{ 'ring-2 ring-primary-200': isEditing }"
+                            >
+                              <option value="">Month</option>
+                              <option v-for="month in 12" :key="month" :value="String(month).padStart(2, '0')">
+                                {{ String(month).padStart(2, '0') }} - {{ getMonthName(month) }}
+                              </option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                              <svg class="h-4 w-4 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                              </svg>
+                            </div>
+                          </div>
+                          <div class="relative">
+                            <select
+                              v-model="editableData.expYear"
+                              class="form-select text-sm bg-white border-primary-300 focus:border-primary-500 focus:ring-primary-500"
+                              :class="{ 'ring-2 ring-primary-200': isEditing }"
+                            >
+                              <option value="">Year</option>
+                              <option v-for="year in getYearOptions()" :key="year" :value="String(year).slice(-2)">
+                                {{ year }}
+                              </option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                              <svg class="h-4 w-4 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <div v-if="isEditing" class="mt-1 text-xs text-primary-600">
+                          Select the card's expiration month and year
                         </div>
                       </div>
                       <div>
@@ -207,17 +262,31 @@
                         </div>
                       </div>
                     </div>
-                    <div class="mt-3 text-sm text-gray-600">
+                    <div class="mt-3 text-sm text-gray-600" v-if="!isEditing">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
-                      Card information is encrypted and cannot be modified for security reasons.
+                      Card information is encrypted and secure. Click "Edit Details" to update the expiry date.
+                    </div>
+                    <div class="mt-3 text-sm text-primary-600" v-else>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      You can now update the card's expiry date. Other card details remain secure.
                     </div>
                   </div>
 
-                  <!-- Bank Account Information (Read-only) -->
-                  <div v-else-if="paymentMethod?.type === 'bank'" class="bg-blue-50 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold mb-4 text-blue-900">Bank Account Information</h3>
+                  <!-- Bank Account Information -->
+                  <div v-else-if="paymentMethod?.type === 'bank'" class="bg-blue-50 rounded-lg p-4 border-2" :class="isEditing ? 'border-blue-300 bg-blue-100' : 'border-blue-200'">
+                    <div class="flex items-center justify-between mb-4">
+                      <h3 class="text-lg font-semibold text-blue-900">Bank Account Information</h3>
+                      <div v-if="isEditing" class="flex items-center text-blue-600 text-sm font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Editing Mode
+                      </div>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label class="form-label text-blue-700">Bank Name</label>
@@ -225,10 +294,39 @@
                           {{ paymentMethod?.bankName }}
                         </div>
                       </div>
-                      <div>
-                        <label class="form-label text-blue-700">Account Type</label>
-                        <div class="text-blue-900 font-medium capitalize">
+                      <div class="relative">
+                        <label class="form-label text-blue-700 flex items-center">
+                          Account Type
+                          <span v-if="isEditing" class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-200 text-blue-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Editable
+                          </span>
+                        </label>
+                        <div v-if="!isEditing" class="text-blue-900 font-medium capitalize bg-white p-2 rounded border">
                           {{ paymentMethod?.accountType }}
+                        </div>
+                        <div v-else class="relative">
+                          <select
+                            v-model="editableData.accountType"
+                            class="form-select text-sm bg-white border-blue-300 focus:border-blue-500 focus:ring-blue-500 w-full"
+                            :class="{ 'ring-2 ring-blue-200': isEditing }"
+                          >
+                            <option value="">Select Account Type</option>
+                            <option value="checking">Checking Account</option>
+                            <option value="savings">Savings Account</option>
+                            <option value="business_checking">Business Checking</option>
+                            <option value="business_savings">Business Savings</option>
+                          </select>
+                          <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                            <svg class="h-4 w-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div v-if="isEditing" class="mt-1 text-xs text-blue-600">
+                          Select the type of bank account for accurate processing
                         </div>
                       </div>
                       <div>
@@ -261,11 +359,17 @@
                         </div>
                       </div>
                     </div>
-                    <div class="mt-3 text-sm text-blue-600">
+                    <div class="mt-3 text-sm text-blue-600" v-if="!isEditing">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
-                      Bank account information is encrypted and cannot be modified for security reasons.
+                      Bank account information is encrypted and secure. Click "Edit Details" to update the account type.
+                    </div>
+                    <div class="mt-3 text-sm text-blue-600" v-else>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      You can now update the account type. Other bank details remain secure.
                     </div>
                   </div>
 
@@ -551,7 +655,10 @@ const editableData = reactive({
     state: '',
     postalCode: '',
     country: 'United States'
-  }
+  },
+  expMonth: '',
+  expYear: '',
+  accountType: ''
 });
 
 // Load payment method data
@@ -569,8 +676,11 @@ onMounted(() => {
   originalData.value = JSON.parse(JSON.stringify(method));
 
   // Initialize editable data
-  editableData.holderName = method.holderName;
+  editableData.holderName = method.holderName || method.accountHolderName;
   editableData.billingAddress = { ...method.billingAddress };
+  editableData.expMonth = method.expMonth;
+  editableData.expYear = method.expYear;
+  editableData.accountType = method.accountType;
 });
 
 // Start editing
@@ -581,15 +691,26 @@ const startEditing = () => {
 // Cancel editing
 const cancelEditing = () => {
   // Reset to original values
-  editableData.holderName = originalData.value.holderName;
+  editableData.holderName = originalData.value.holderName || originalData.value.accountHolderName;
   editableData.billingAddress = { ...originalData.value.billingAddress };
+  editableData.expMonth = originalData.value.expMonth;
+  editableData.expYear = originalData.value.expYear;
+  editableData.accountType = originalData.value.accountType;
   isEditing.value = false;
 };
 
 // Save changes
 const saveChanges = () => {
   // In a real app, this would make an API call
-  paymentMethod.value.holderName = editableData.holderName;
+  if (paymentMethod.value.type === 'card') {
+    paymentMethod.value.holderName = editableData.holderName;
+    paymentMethod.value.expMonth = editableData.expMonth;
+    paymentMethod.value.expYear = editableData.expYear;
+  } else if (paymentMethod.value.type === 'bank') {
+    paymentMethod.value.accountHolderName = editableData.holderName;
+    paymentMethod.value.accountType = editableData.accountType;
+  }
+  
   paymentMethod.value.billingAddress = { ...editableData.billingAddress };
 
   // Update original data
@@ -621,5 +742,22 @@ const deletePaymentMethod = () => {
     alert('Payment method removed successfully!');
     router.push('/profile?section=payment');
   }
+};
+
+// Get month name
+const getMonthName = (month) => {
+  const date = new Date();
+  date.setMonth(month - 1);
+  return date.toLocaleString('default', { month: 'long' });
+};
+
+// Get year options
+const getYearOptions = () => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let i = 0; i < 10; i++) {
+    years.push(currentYear + i);
+  }
+  return years;
 };
 </script>
