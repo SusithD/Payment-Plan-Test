@@ -82,25 +82,173 @@
             <div>
               <h3 class="text-md font-medium mb-4 text-gray-700">Payment Method</h3>
               <div class="space-y-4">
-                <div v-for="(method, index) in paymentMethods" :key="index" 
-                      class="relative border p-4 rounded-lg cursor-pointer"
-                      :class="{ 'border-primary-500 bg-primary-50': selectedPaymentMethod === method.id, 'border-gray-200': selectedPaymentMethod !== method.id }"
-                      @click="selectedPaymentMethod = method.id">
-                  <div class="flex items-center">
-                    <div class="h-8 w-8 flex items-center justify-center mr-3">
-                      <img v-if="method.icon" :src="method.icon" class="h-6" :alt="method.name">
-                      <span v-else class="h-6 w-6 rounded-full bg-gray-200 flex items-center justify-center text-xs">
-                        {{ method.name[0] }}
-                      </span>
+                <!-- Credit Card Category -->
+                <div class="border rounded-lg overflow-hidden"
+                     :class="{ 'border-primary-500 bg-primary-50': selectedPaymentCategory === 'credit-card', 'border-gray-200': selectedPaymentCategory !== 'credit-card' }">
+                  <div class="p-4 cursor-pointer" @click="toggleCategory('credit-card')">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                        <div class="h-8 w-8 flex items-center justify-center mr-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 class="font-medium">Credit Cards</h4>
+                          <p class="text-xs text-gray-500">{{ getCategoryCount('creditCards') }} cards available</p>
+                        </div>
+                      </div>
+                      <div class="flex items-center">
+                        <div class="h-5 w-5 rounded-full border-2 mr-3"
+                             :class="{ 'border-primary-500': selectedPaymentCategory === 'credit-card', 'border-gray-300': selectedPaymentCategory !== 'credit-card' }">
+                          <div v-if="selectedPaymentCategory === 'credit-card'" class="h-3 w-3 m-0.5 rounded-full bg-primary-500"></div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 transition-transform duration-200"
+                             :class="{ 'rotate-180': expandedCategory === 'credit-card' }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                     </div>
-                    <div class="flex-grow">
-                      <h4 class="font-medium">{{ method.name }}</h4>
-                      <p class="text-xs text-gray-500">{{ method.details }}</p>
+                  </div>
+                  
+                  <!-- Expanded Credit Card Options -->
+                  <div v-if="expandedCategory === 'credit-card'" class="border-t border-gray-200 bg-gray-50">
+                    <div class="p-4 space-y-3">
+                      <div v-for="card in paymentMethods.creditCards" :key="card.id" 
+                           class="bg-white border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                           :class="{ 'border-primary-500 bg-primary-50': selectedPaymentMethod === card.id, 'border-gray-200': selectedPaymentMethod !== card.id }"
+                           @click="selectPaymentMethod(card.id, 'credit-card')">
+                        <div class="flex items-center justify-between">
+                          <div class="flex items-center">
+                            <div class="h-8 w-8 flex items-center justify-center mr-3">
+                              <img v-if="card.brand === 'visa'" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzE0MzQ5QyIvPgo8dGV4dCB4PSI1IiB5PSIxNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjhweCIgZmlsbD0id2hpdGUiPiVWaXNhPC90ZXh0Pgo8L3N2Zz4K" class="h-6" alt="Visa">
+                              <img v-else-if="card.brand === 'mastercard'" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8dGV4dCB4PSI1IiB5PSIxNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjZweCIgZmlsbD0id2hpdGUiPk1hc3RlckNhcmQ8L3RleHQ+Cjwvc3ZnPgo=" class="h-6" alt="MasterCard">
+                              <div v-else class="h-6 w-6 rounded bg-gray-300 flex items-center justify-center text-xs text-gray-600">CC</div>
+                            </div>
+                            <div>
+                              <p class="text-sm font-medium">{{ card.name }}</p>
+                              <p class="text-xs text-gray-500">{{ card.details }}</p>
+                            </div>
+                          </div>
+                          <div class="h-4 w-4 rounded-full border-2"
+                               :class="{ 'border-primary-500': selectedPaymentMethod === card.id, 'border-gray-300': selectedPaymentMethod !== card.id }">
+                            <div v-if="selectedPaymentMethod === card.id" class="h-2 w-2 m-0.5 rounded-full bg-primary-500"></div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="flex-shrink-0">
-                      <div class="h-5 w-5 rounded-full border-2"
-                           :class="{ 'border-primary-500': selectedPaymentMethod === method.id, 'border-gray-300': selectedPaymentMethod !== method.id }">
-                        <div v-if="selectedPaymentMethod === method.id" class="h-3 w-3 m-0.5 rounded-full bg-primary-500"></div>
+                  </div>
+                </div>
+
+                <!-- Debit Card Category -->
+                <div class="border rounded-lg overflow-hidden"
+                     :class="{ 'border-primary-500 bg-primary-50': selectedPaymentCategory === 'debit-card', 'border-gray-200': selectedPaymentCategory !== 'debit-card' }">
+                  <div class="p-4 cursor-pointer" @click="toggleCategory('debit-card')">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                        <div class="h-8 w-8 flex items-center justify-center mr-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 class="font-medium">Debit Cards</h4>
+                          <p class="text-xs text-gray-500">{{ getCategoryCount('debitCards') }} cards available</p>
+                        </div>
+                      </div>
+                      <div class="flex items-center">
+                        <div class="h-5 w-5 rounded-full border-2 mr-3"
+                             :class="{ 'border-primary-500': selectedPaymentCategory === 'debit-card', 'border-gray-300': selectedPaymentCategory !== 'debit-card' }">
+                          <div v-if="selectedPaymentCategory === 'debit-card'" class="h-3 w-3 m-0.5 rounded-full bg-primary-500"></div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 transition-transform duration-200"
+                             :class="{ 'rotate-180': expandedCategory === 'debit-card' }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Expanded Debit Card Options -->
+                  <div v-if="expandedCategory === 'debit-card'" class="border-t border-gray-200 bg-gray-50">
+                    <div class="p-4 space-y-3">
+                      <div v-for="card in paymentMethods.debitCards" :key="card.id" 
+                           class="bg-white border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                           :class="{ 'border-primary-500 bg-primary-50': selectedPaymentMethod === card.id, 'border-gray-200': selectedPaymentMethod !== card.id }"
+                           @click="selectPaymentMethod(card.id, 'debit-card')">
+                        <div class="flex items-center justify-between">
+                          <div class="flex items-center">
+                            <div class="h-8 w-8 flex items-center justify-center mr-3">
+                              <img v-if="card.brand === 'visa'" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzE0MzQ5QyIvPgo8dGV4dCB4PSI1IiB5PSIxNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjhweCIgZmlsbD0id2hpdGUiPiVWaXNhPC90ZXh0Pgo8L3N2Zz4K" class="h-6" alt="Visa">
+                              <img v-else-if="card.brand === 'mastercard'" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8dGV4dCB4PSI1IiB5PSIxNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjZweCIgZmlsbD0id2hpdGUiPk1hc3RlckNhcmQ8L3RleHQ+Cjwvc3ZnPgo=" class="h-6" alt="MasterCard">
+                              <div v-else class="h-6 w-6 rounded bg-green-100 flex items-center justify-center text-xs text-green-600 font-medium">DB</div>
+                            </div>
+                            <div>
+                              <p class="text-sm font-medium">{{ card.name }}</p>
+                              <p class="text-xs text-gray-500">{{ card.details }}</p>
+                            </div>
+                          </div>
+                          <div class="h-4 w-4 rounded-full border-2"
+                               :class="{ 'border-primary-500': selectedPaymentMethod === card.id, 'border-gray-300': selectedPaymentMethod !== card.id }">
+                            <div v-if="selectedPaymentMethod === card.id" class="h-2 w-2 m-0.5 rounded-full bg-primary-500"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bank Transfer Category -->
+                <div class="border rounded-lg overflow-hidden"
+                     :class="{ 'border-primary-500 bg-primary-50': selectedPaymentCategory === 'bank-transfer', 'border-gray-200': selectedPaymentCategory !== 'bank-transfer' }">
+                  <div class="p-4 cursor-pointer" @click="toggleCategory('bank-transfer')">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                        <div class="h-8 w-8 flex items-center justify-center mr-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 class="font-medium">Bank Transfer</h4>
+                          <p class="text-xs text-gray-500">{{ getCategoryCount('bankTransfers') }} accounts available</p>
+                        </div>
+                      </div>
+                      <div class="flex items-center">
+                        <div class="h-5 w-5 rounded-full border-2 mr-3"
+                             :class="{ 'border-primary-500': selectedPaymentCategory === 'bank-transfer', 'border-gray-300': selectedPaymentCategory !== 'bank-transfer' }">
+                          <div v-if="selectedPaymentCategory === 'bank-transfer'" class="h-3 w-3 m-0.5 rounded-full bg-primary-500"></div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 transition-transform duration-200"
+                             :class="{ 'rotate-180': expandedCategory === 'bank-transfer' }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Expanded Bank Transfer Options -->
+                  <div v-if="expandedCategory === 'bank-transfer'" class="border-t border-gray-200 bg-gray-50">
+                    <div class="p-4 space-y-3">
+                      <div v-for="bank in paymentMethods.bankTransfers" :key="bank.id" 
+                           class="bg-white border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                           :class="{ 'border-primary-500 bg-primary-50': selectedPaymentMethod === bank.id, 'border-gray-200': selectedPaymentMethod !== bank.id }"
+                           @click="selectPaymentMethod(bank.id, 'bank-transfer')">
+                        <div class="flex items-center justify-between">
+                          <div class="flex items-center">
+                            <div class="h-8 w-8 flex items-center justify-center mr-3">
+                              <div class="h-6 w-6 rounded bg-blue-100 flex items-center justify-center text-xs text-blue-600 font-medium">{{ bank.bankCode }}</div>
+                            </div>
+                            <div>
+                              <p class="text-sm font-medium">{{ bank.name }}</p>
+                              <p class="text-xs text-gray-500">{{ bank.details }}</p>
+                            </div>
+                          </div>
+                          <div class="h-4 w-4 rounded-full border-2"
+                               :class="{ 'border-primary-500': selectedPaymentMethod === bank.id, 'border-gray-300': selectedPaymentMethod !== bank.id }">
+                            <div v-if="selectedPaymentMethod === bank.id" class="h-2 w-2 m-0.5 rounded-full bg-primary-500"></div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -229,6 +377,8 @@ definePageMeta({
 
 const router = useRouter();
 const selectedPaymentMethod = ref(1); // Default to first payment method
+const selectedPaymentCategory = ref(null);
+const expandedCategory = ref(null);
 
 // Mock data for review page - would be passed from previous page or fetched from API
 const selectedInstalments = ref([
@@ -253,26 +403,50 @@ const selectedInstalments = ref([
 ]);
 
 // Mock payment methods
-const paymentMethods = ref([
-  {
-    id: 1,
-    name: 'Credit Card',
-    details: 'Visa ending in 4242',
-    icon: null
-  },
-  {
-    id: 2,
-    name: 'Bank Transfer',
-    details: 'Direct bank transfer',
-    icon: null
-  },
-  {
-    id: 3,
-    name: 'PayPal',
-    details: 'Pay using your PayPal account',
-    icon: null
-  }
-]);
+const paymentMethods = ref({
+  creditCards: [
+    {
+      id: 1,
+      name: 'Visa ending in 4242',
+      details: 'Expires 12/25',
+      brand: 'visa'
+    },
+    {
+      id: 2,
+      name: 'MasterCard ending in 1234',
+      details: 'Expires 11/24',
+      brand: 'mastercard'
+    }
+  ],
+  debitCards: [
+    {
+      id: 3,
+      name: 'Visa Debit ending in 5678',
+      details: 'Expires 12/23',
+      brand: 'visa'
+    },
+    {
+      id: 4,
+      name: 'MasterCard Debit ending in 9101',
+      details: 'Expires 11/22',
+      brand: 'mastercard'
+    }
+  ],
+  bankTransfers: [
+    {
+      id: 5,
+      name: 'Bank of America',
+      details: 'Account ending in 5678',
+      bankCode: 'BOA'
+    },
+    {
+      id: 6,
+      name: 'Chase Bank',
+      details: 'Account ending in 9101',
+      bankCode: 'CHASE'
+    }
+  ]
+});
 
 // User contact information for confirmation
 const userEmail = ref('john.doe@example.com');
@@ -318,5 +492,26 @@ const proceedToPayment = () => {
   setTimeout(() => {
     router.push('/payments/confirmation?status=success');
   }, 1500);
+};
+
+// Method to toggle category expansion
+const toggleCategory = (category) => {
+  if (expandedCategory.value === category) {
+    expandedCategory.value = null;
+  } else {
+    expandedCategory.value = category;
+    selectedPaymentCategory.value = category;
+  }
+};
+
+// Method to select a payment method
+const selectPaymentMethod = (methodId, category) => {
+  selectedPaymentMethod.value = methodId;
+  selectedPaymentCategory.value = category;
+};
+
+// Method to get the count of payment methods in a category
+const getCategoryCount = (category) => {
+  return paymentMethods.value[category]?.length || 0;
 };
 </script>
