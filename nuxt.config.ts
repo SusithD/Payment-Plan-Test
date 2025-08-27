@@ -20,5 +20,17 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
       ]
     }
+  },
+  
+  // Add error page handling
+  hooks: {
+    'render:errorMiddleware'(app) {
+      app.use((error, req, res, next) => {
+        if (error.statusCode === 503) {
+          res.redirect('/503')
+        }
+        next(error)
+      })
+    }
   }
 })
