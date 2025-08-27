@@ -195,7 +195,7 @@ function updateLastUpdated() {
 
 function updateExpectedCompletion() {
   const now = new Date();
-  const completion = new Date(now.getTime() + 30 * 60000); // 30 minutes from now
+  const completion = new Date(now.getTime() + 30 * 60000);
   expectedCompletion.value = completion.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
