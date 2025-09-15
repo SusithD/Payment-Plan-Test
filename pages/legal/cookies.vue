@@ -11,10 +11,10 @@
           </div>
           <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">Cookie Policy</h1>
           <p class="text-xl text-primary-100 leading-relaxed">
-            Learn about how we use cookies and similar technologies to improve your experience.
+            Learn how CoverageX uses cookies and similar technologies to enhance your payment plan experience.
           </p>
           <div class="mt-6 text-sm text-primary-200">
-            Last updated: August 9, 2025
+            Last updated: August 29, 2025
           </div>
         </div>
       </div>
@@ -24,49 +24,43 @@
     <section class="py-16">
       <div class="container-custom">
         <div class="max-w-4xl mx-auto">
-          <!-- Cookie Summary -->
+          <!-- Overview Section -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">What Are Cookies?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <div class="h-12 w-12 bg-accent-100 text-accent-600 rounded-full flex items-center justify-center mb-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                  </svg>
-                </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Small Data Files</h3>
-                <p class="text-sm text-gray-600">Cookies are small text files stored on your device when you visit our website. They help us remember your preferences and improve your experience.</p>
-              </div>
-              <div>
-                <div class="h-12 w-12 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center mb-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Your Control</h3>
-                <p class="text-sm text-gray-600">You have full control over cookie settings and can manage your preferences at any time through our cookie preference center.</p>
-              </div>
-            </div>
-            
-            <div class="mt-6 p-4 bg-accent-50 border border-accent-200 rounded-lg">
-              <div class="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-600 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div>
-                  <p class="text-sm text-gray-700">
-                    <strong>Quick Access:</strong> You can manage your cookie preferences at any time by visiting our 
-                    <NuxtLink to="/legal/cookie-preferences" class="text-primary-600 hover:text-primary-700 font-medium">Cookie Preferences Center</NuxtLink>.
+            <div class="bg-gradient-to-r from-slate-50 to-sky-50/30 p-6 rounded-xl border border-slate-200/50 mb-6">
+              <h2 class="text-xl font-bold text-gray-900 mb-4">1. Overview</h2>
+              <div class="space-y-4 text-gray-700 leading-relaxed">
+                <p>
+                  This Cookie Policy explains how <span class="font-semibold text-gray-900">CoverageX LLC</span> ("CoverageX," "Company," "we," "us," or "our") uses cookies and related technologies when you visit our website CoverageX.com or use our payment plan services.
+                </p>
+                <div class="bg-white/70 p-4 rounded-lg border border-slate-200/30">
+                  <p>
+                    For any questions or concerns, please contact us at:
+                  </p>
+                  <p class="mt-2">
+                    <strong>Email:</strong> <span class="font-semibold text-primary-600">compliance@coveragex.com</span><br>
+                    <strong>Phone:</strong> <span class="font-semibold text-primary-600">800-258-3413</span>
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Types of Cookies -->
+          <!-- What Are Cookies -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Types of Cookies We Use</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">2. What Are Cookies?</h2>
+            <div class="prose prose-gray max-w-none">
+              <p>
+                Cookies are small text files stored on your device when you visit a website. They are widely used to make websites work more efficiently, as well as to provide reporting information and enhanced functionality.
+              </p>
+            </div>
+          </div>
+
+          <!-- How We Use Cookies -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">3. How We Use Cookies</h2>
+            <div class="prose prose-gray max-w-none mb-6">
+              <p>We use cookies for several purposes to ensure the optimal functioning of our services:</p>
+            </div>
             
             <div class="space-y-6">
               <!-- Essential Cookies -->
@@ -79,20 +73,47 @@
                       </svg>
                     </div>
                     <div>
-                      <h3 class="text-lg font-semibold text-gray-900">Essential Cookies</h3>
-                      <p class="text-sm text-gray-600">Required for basic website functionality</p>
+                      <h3 class="text-lg font-semibold text-gray-900">A. Essential Cookies</h3>
                     </div>
                   </div>
                   <span class="text-xs bg-error-100 text-error-800 px-2 py-1 rounded-full font-medium">Always Active</span>
                 </div>
                 
                 <div class="prose prose-gray max-w-none">
-                  <p>These cookies are necessary for our website to function properly and cannot be switched off. They include:</p>
+                  <p>These cookies are required for core site functionality:</p>
                   <ul class="list-disc pl-6 space-y-1 mt-3">
-                    <li>Authentication cookies that keep you logged in</li>
-                    <li>Security cookies that protect against fraud</li>
-                    <li>Load balancing cookies that ensure optimal performance</li>
-                    <li>Session cookies that maintain your shopping cart or form data</li>
+                    <li>Secure payment processing</li>
+                    <li>Account authentication and management</li>
+                    <li>Payment cart and checkout features</li>
+                    <li>Fraud detection and security</li>
+                    <li>Session control and load balancing</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Performance & Analytics Cookies -->
+              <div class="border border-gray-200 rounded-lg p-6">
+                <div class="flex items-start justify-between mb-4">
+                  <div class="flex items-center">
+                    <div class="h-10 w-10 bg-secondary-100 text-secondary-600 rounded-full flex items-center justify-center mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-900">B. Performance & Analytics Cookies</h3>
+                    </div>
+                  </div>
+                  <span class="text-xs bg-secondary-100 text-secondary-800 px-2 py-1 rounded-full font-medium">Optional</span>
+                </div>
+                
+                <div class="prose prose-gray max-w-none">
+                  <p>Help us understand site usage and performance:</p>
+                  <ul class="list-disc pl-6 space-y-1 mt-3">
+                    <li>Website traffic analytics</li>
+                    <li>User behavior tracking</li>
+                    <li>Error detection and debugging</li>
+                    <li>A/B testing to improve features</li>
                   </ul>
                 </div>
               </div>
@@ -108,54 +129,23 @@
                       </svg>
                     </div>
                     <div>
-                      <h3 class="text-lg font-semibold text-gray-900">Functional Cookies</h3>
-                      <p class="text-sm text-gray-600">Enhance your experience and remember preferences</p>
+                      <h3 class="text-lg font-semibold text-gray-900">C. Functional Cookies</h3>
                     </div>
                   </div>
                   <span class="text-xs bg-primary-100 text-primary-800 px-2 py-1 rounded-full font-medium">Optional</span>
                 </div>
                 
                 <div class="prose prose-gray max-w-none">
-                  <p>These cookies enhance your experience by remembering your choices and preferences:</p>
+                  <p>Enhance personalization and usability:</p>
                   <ul class="list-disc pl-6 space-y-1 mt-3">
-                    <li>Language and region preferences</li>
-                    <li>Display settings (dark mode, font size)</li>
-                    <li>Previously entered form information</li>
-                    <li>Notification preferences</li>
+                    <li>Save your language and region preferences</li>
+                    <li>Customize the user interface</li>
+                    <li>Remember selected payment plans</li>
                   </ul>
                 </div>
               </div>
 
-              <!-- Analytics Cookies -->
-              <div class="border border-gray-200 rounded-lg p-6">
-                <div class="flex items-start justify-between mb-4">
-                  <div class="flex items-center">
-                    <div class="h-10 w-10 bg-secondary-100 text-secondary-600 rounded-full flex items-center justify-center mr-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 class="text-lg font-semibold text-gray-900">Analytics Cookies</h3>
-                      <p class="text-sm text-gray-600">Help us understand how you use our website</p>
-                    </div>
-                  </div>
-                  <span class="text-xs bg-secondary-100 text-secondary-800 px-2 py-1 rounded-full font-medium">Optional</span>
-                </div>
-                
-                <div class="prose prose-gray max-w-none">
-                  <p>These cookies help us improve our website by collecting anonymous usage data:</p>
-                  <ul class="list-disc pl-6 space-y-1 mt-3">
-                    <li>Pages visited and time spent on each page</li>
-                    <li>Popular features and content</li>
-                    <li>Error tracking and performance monitoring</li>
-                    <li>User journey analysis (anonymized)</li>
-                  </ul>
-                  <p class="mt-3 text-sm"><strong>Providers:</strong> Google Analytics, Hotjar</p>
-                </div>
-              </div>
-
-              <!-- Marketing Cookies -->
+              <!-- Marketing & Advertising Cookies -->
               <div class="border border-gray-200 rounded-lg p-6">
                 <div class="flex items-start justify-between mb-4">
                   <div class="flex items-center">
@@ -165,125 +155,97 @@
                       </svg>
                     </div>
                     <div>
-                      <h3 class="text-lg font-semibold text-gray-900">Marketing Cookies</h3>
-                      <p class="text-sm text-gray-600">Enable personalized advertising and content</p>
+                      <h3 class="text-lg font-semibold text-gray-900">D. Marketing & Advertising Cookies</h3>
                     </div>
                   </div>
                   <span class="text-xs bg-accent-100 text-accent-800 px-2 py-1 rounded-full font-medium">Optional</span>
                 </div>
                 
                 <div class="prose prose-gray max-w-none">
-                  <p>These cookies help us deliver relevant advertisements and measure their effectiveness:</p>
+                  <p>Deliver relevant ads and measure effectiveness:</p>
                   <ul class="list-disc pl-6 space-y-1 mt-3">
-                    <li>Track conversions from advertisements</li>
-                    <li>Personalize content and offers</li>
-                    <li>Retargeting and remarketing</li>
-                    <li>Social media integration</li>
+                    <li>Interest-based advertising</li>
+                    <li>Social media sharing tools</li>
+                    <li>Remarketing to prior visitors</li>
                   </ul>
-                  <p class="mt-3 text-sm"><strong>Providers:</strong> Google Ads, Facebook Pixel, LinkedIn Insight Tag</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Managing Cookies -->
+          <!-- Third-Party Cookies -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Managing Your Cookie Preferences</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="bg-primary-50 border border-primary-200 rounded-lg p-6">
-                <div class="flex items-center mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <h3 class="text-lg font-semibold text-gray-900">Our Cookie Center</h3>
-                </div>
-                <p class="text-gray-700 mb-4">Use our preference center to easily manage which cookies you want to allow or block.</p>
-                <NuxtLink to="/legal/cookie-preferences" class="btn btn-primary w-full justify-center">
-                  Manage Cookie Preferences
-                </NuxtLink>
-              </div>
-              
-              <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
-                <div class="flex items-center mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  <h3 class="text-lg font-semibold text-gray-900">Browser Settings</h3>
-                </div>
-                <p class="text-gray-700 mb-4">You can also manage cookies directly through your browser settings. This will affect all websites you visit.</p>
-                <div class="space-y-2">
-                  <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener" class="block text-sm text-primary-600 hover:text-primary-700">Chrome Cookie Settings</a>
-                  <a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank" rel="noopener" class="block text-sm text-primary-600 hover:text-primary-700">Firefox Cookie Settings</a>
-                  <a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" target="_blank" rel="noopener" class="block text-sm text-primary-600 hover:text-primary-700">Safari Cookie Settings</a>
-                </div>
-              </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">4. Third-Party Cookies</h2>
+            <div class="prose prose-gray max-w-none">
+              <p>We work with trusted partners that may set cookies on your device, including:</p>
+              <ul class="list-disc pl-6 space-y-1 mt-4">
+                <li>Payment processors (e.g., for secure checkout)</li>
+                <li>Analytics providers (e.g., Google Analytics)</li>
+                <li>Social media integrations (e.g., Google & Apple ID)</li>
+              </ul>
             </div>
           </div>
 
-          <!-- Third-Party Services -->
+          <!-- Managing Cookie Preferences -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Third-Party Services</h2>
-            
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">5. Managing Your Cookie Preferences</h2>
             <div class="prose prose-gray max-w-none">
-              <p>We work with trusted third-party services that may also set cookies on your device. These include:</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h4 class="font-semibold text-gray-900 mb-2">Google Analytics</h4>
-                <p class="text-sm text-gray-600 mb-2">Website analytics and performance tracking</p>
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-xs text-primary-600 hover:text-primary-700">Privacy Policy</a>
-              </div>
-              
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h4 class="font-semibold text-gray-900 mb-2">Stripe</h4>
-                <p class="text-sm text-gray-600 mb-2">Secure payment processing</p>
-                <a href="https://stripe.com/privacy" target="_blank" rel="noopener" class="text-xs text-primary-600 hover:text-primary-700">Privacy Policy</a>
-              </div>
-              
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h4 class="font-semibold text-gray-900 mb-2">Intercom</h4>
-                <p class="text-sm text-gray-600 mb-2">Customer support and messaging</p>
-                <a href="https://www.intercom.com/legal/privacy" target="_blank" rel="noopener" class="text-xs text-primary-600 hover:text-primary-700">Privacy Policy</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Updates and Contact -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Updates to This Policy</h2>
-            
-            <div class="prose prose-gray max-w-none">
-              <p>We may update this Cookie Policy from time to time to reflect changes in technology, legislation, or our business practices. When we make significant changes, we will:</p>
-              
-              <ul class="list-disc pl-6 space-y-2">
-                <li>Update the "Last updated" date at the top of this policy</li>
-                <li>Notify you via email if you have an account with us</li>
-                <li>Display a notice on our website</li>
-                <li>Request fresh consent where required by law</li>
+              <p>You can manage your cookie settings through:</p>
+              <ul class="list-disc pl-6 space-y-1 mt-4">
+                <li>Our Cookie Preferences Center</li>
+                <li>Your browser settings (Chrome, Firefox, Safari, etc.)</li>
+                <li>Third-party opt-out tools (e.g., Google Analytics Opt-Out)</li>
               </ul>
               
-              <div class="bg-gray-50 rounded-lg p-6 mt-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Questions About Cookies?</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p class="text-sm text-gray-600 mb-1">Email us:</p>
-                    <p class="font-medium text-gray-900">privacy@coveragex.com</p>
+              <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-6">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center mt-1 mr-3">
+                    <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-600 mb-1">Or visit:</p>
-                    <NuxtLink to="/support" class="font-medium text-primary-600 hover:text-primary-700">Support Center</NuxtLink>
+                    <p class="text-amber-700 text-sm">
+                      <strong>Note:</strong> Disabling essential cookies may impair the functionality of our payment services.
+                    </p>
                   </div>
                 </div>
               </div>
+            </div>
+            
+            <div class="mt-6">
+              <NuxtLink to="/legal/cookie-preferences" class="btn btn-primary">
+                Manage Cookie Preferences
+              </NuxtLink>
+            </div>
+          </div>
+
+          <!-- Cookie Duration -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">6. Cookie Duration</h2>
+            <div class="prose prose-gray max-w-none">
+              <p>Cookies may be stored for varying lengths of time:</p>
+              <ul class="list-disc pl-6 space-y-1 mt-4">
+                <li>Session cookies: Deleted once you close your browser</li>
+                <li>Persistent cookies: Stored for up to 24 months (2 years)</li>
+                <li>Analytics cookies: Stored up to 26 months (2.2 years)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Changes to This Policy -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">7. Changes to This Policy</h2>
+            <div class="prose prose-gray max-w-none">
+              <p>
+                We may update this Cookie Policy from time to time. Any changes will be posted on this page, with the updated "Last Updated" date shown above.
+              </p>
             </div>
           </div>
 
           <!-- Related Links -->
           <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4">Related Documents</h3>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Related Legal Documents</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <NuxtLink to="/legal/privacy" class="flex items-center p-4 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-all">
                 <div class="mr-3">
@@ -293,7 +255,7 @@
                 </div>
                 <div>
                   <h4 class="font-semibold text-gray-900">Privacy Policy</h4>
-                  <p class="text-sm text-gray-600">Our data protection practices</p>
+                  <p class="text-sm text-gray-600">How we collect and use your data</p>
                 </div>
               </NuxtLink>
               
@@ -318,7 +280,7 @@
                 </div>
                 <div>
                   <h4 class="font-semibold text-gray-900">Cookie Preferences</h4>
-                  <p class="text-sm text-gray-600">Manage your settings</p>
+                  <p class="text-sm text-gray-600">Manage your cookie settings</p>
                 </div>
               </NuxtLink>
             </div>
@@ -332,7 +294,7 @@
 <script setup>
 definePageMeta({
   title: 'Cookie Policy - CoverageX Payment Solutions',
-  description: 'Learn about how we use cookies and similar technologies on our payment platform.'
+  description: 'Learn how CoverageX uses cookies and similar technologies to enhance your payment plan experience.'
 });
 </script>
 
