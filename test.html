@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X Logo Preloader</title>
+  <style>
+    body {
+      background: #f8f9fa;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .preloader-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    svg {
+      width: 250px;
+      height: 250px;
+    }
+
+    .shape {
+      opacity: 0;
+    }
+
+    .shape-1 {
+      animation: slideIn1 2s cubic-bezier(0.4,0,0.2,1) forwards infinite;
+    }
+
+    .shape-2 {
+      animation: slideIn2 2s cubic-bezier(0.4,0,0.2,1) forwards infinite;
+    }
+
+    .shape-3 {
+      animation: slideIn3 2s cubic-bezier(0.4,0,0.2,1) forwards infinite;
+    }
+
+    @keyframes slideIn1 {
+      from { transform: translate(-300px, -300px); opacity: 0; }
+      to   { transform: translate(0, 0); opacity: 1; }
+    }
+
+    @keyframes slideIn2 {
+      from { transform: translate(300px, -300px); opacity: 0; }
+      to   { transform: translate(0, 0); opacity: 1; }
+    }
+
+    @keyframes slideIn3 {
+      from { transform: translate(-300px, 300px); opacity: 0; }
+      to   { transform: translate(0, 0); opacity: 1; }
+    }
+
+    .loading-text {
+      position: absolute;
+      bottom: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      color: #6c757d;
+      font-weight: 500;
+      letter-spacing: 2px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preloader-container" id="preloader">
+    <!-- Exact SVG Logo matching XSign_CMYK.svg -->
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <!-- Dark blue diagonal (middle piece) -->
+      <polygon class="shape shape-1" fill="#231e5e" points="1026.16,734.13 724.56,345.87 893.84,345.87 1195.44,734.13"/>
+      
+      <!-- Top cyan piece -->
+      <polygon class="shape shape-2" fill="#35c6f4" points="1129.18,431.16 1298.27,213.48 1128.99,213.48 959.9,431.16"/>
+      
+      <!-- Bottom cyan piece -->
+      <polygon class="shape shape-3" fill="#35c6f4" points="790.82,648.84 621.73,866.52 791.01,866.52 960.1,648.84"/>
+    </svg>
+
+    <div class="loading-text">LOADING<span class="dots">...</span></div>
+  </div>
+</body>
+</html>
